@@ -1,47 +1,6 @@
 ﻿namespace ChatworkApi.Models
 {
-    public interface IMeModel
-    {
-        int account_id { get; set; }
-
-        int room_id { get; set; }
-
-        string name { get; set; }
-
-        string chatwork_id { get; set; }
-
-        int organization_id { get; set; }
-
-        string organization_name { get; set; }
-
-        string department { get; set; }
-
-        string title { get; set; }
-
-        string url { get; set; }
-
-        string introduction { get; set; }
-
-        string mail { get; set; }
-
-        string tel_organization { get; set; }
-
-        string tel_extension { get; set; }
-
-        string tel_mobile { get; set; }
-
-        string skype { get; set; }
-
-        string facebook { get; set; }
-
-        string twitter { get; set; }
-
-        string avatar_image_url { get; set; }
-
-        string login_mail { get; set; }
-    }
-
-    internal sealed class MeModel : IMeModel
+    public sealed class MeModel
     {
         public int account_id { get; set; }
         public int room_id { get; set; }
