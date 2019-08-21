@@ -11,13 +11,13 @@ namespace ChatworkApi.Debugs.Console
 
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             var apiToken = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "api-token.txt"));
-            var apiClient = new ChatworkApi.ApiClient(apiToken);
-            var result = await apiClient.GetAsync($"/me");
+            var client = new ChatworkClient(apiToken);
+            var me = client.GetMeAsync().Result;
             
-            Console.WriteLine(result);
+            Console.WriteLine($"所属:{me.organization_name}, 氏名:{me.name}, ID:{me.account_id}");
         }
     }
 }

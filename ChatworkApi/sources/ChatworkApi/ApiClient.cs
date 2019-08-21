@@ -5,7 +5,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    public sealed class ApiClient
+    internal sealed class ApiClient
     {
         private static readonly string BaseUri = "https://api.chatwork.com/v2";
 
@@ -27,11 +27,11 @@
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
             requestMessage.Headers.Add(ApiTokenHeaderKey, _apiToken);
 
-            var response = await _httpClient.SendAsync(requestMessage);
+            var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode) throw new NotImplementedException();
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             return content;
         }
