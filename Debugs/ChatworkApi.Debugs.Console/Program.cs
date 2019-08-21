@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     internal class Program
     {
@@ -17,6 +18,14 @@
 
             Console.WriteLine($"未読のある部屋の数:{myStatus.unread_room_num}, 返信のある部屋の数:{myStatus.mention_room_num}, タスクのある部屋の数:{myStatus.mytask_room_num}"
                               + $", 未読の数:{myStatus.unread_num}, 返信の数:{myStatus.mention_num}, タスクの数:{myStatus.mention_num}");
+
+            var contacts = client.Contacts.GetAsync().Result
+                                 .OrderBy(x => x.account_id)
+                                 .Select(x => $"{x.organization_name}:{x.name}[{x.department}]")
+                                 .ToArray();
+
+            Console.WriteLine("- 自分のコンタクト一覧");
+            Console.WriteLine($"{string.Join(Environment.NewLine, contacts)}");
         }
     }
 }

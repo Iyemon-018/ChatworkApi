@@ -6,13 +6,15 @@
     using Models;
     using Newtonsoft.Json;
 
-    public sealed class ClientApi : IMeApi, IMyApi
+    public sealed class ClientApi : IMeApi, IMyApi, IContactsApi
     {
         private readonly ApiClient _apiClient;
 
         public IMeApi Me => this;
 
         public IMyApi My => this;
+
+        public IContactsApi Contacts => this;
 
         private static IDictionary<TaskStatus, string> TaskStatusToValueMap
             => new Dictionary<TaskStatus, string>
@@ -41,5 +43,7 @@
         => GetAsync<MyTaskModel>("/my/status"
                                    ,  ("assigned_by_account_id", $"{assignedByAccountId}")
                                    , ("status", TaskStatusToValueMap[status]));
+
+        Task<IEnumerable<ContactModel>> IContactsApi.GetAsync() => GetAsync<IEnumerable<ContactModel>>("/contacts");
     }
 }
