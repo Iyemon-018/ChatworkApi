@@ -9,23 +9,17 @@
     {
         private static readonly string BaseUri = "https://api.chatwork.com/v2";
 
-        private static readonly string ApiTokenHeaderKey = "X-ChatWorkToken";
-
-        private readonly string _apiToken;
-
         private readonly HttpClient _httpClient;
 
         public ApiClient(string apiToken)
         {
-            _apiToken   = apiToken;
-            _httpClient = new HttpClient();
+            _httpClient = new HttpClient(new AuthenticationHandler(apiToken));
         }
 
         public async Task<string> GetAsync(string path, params (string key, string value)[] parameters)
         {
             var requestUri     = $"{BaseUri}{path}{string.Join("?", parameters.Select(x => $"{x.key}={x.value}"))}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
-            requestMessage.Headers.Add(ApiTokenHeaderKey, _apiToken);
 
             var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
@@ -40,7 +34,6 @@
         {
             var requestUri = $"{BaseUri}{path}{string.Join("?", parameters.Select(x => $"{x.key}={x.value}"))}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
-            requestMessage.Headers.Add(ApiTokenHeaderKey, _apiToken);
 
             var response = await _httpClient.SendAsync(requestMessage);
 

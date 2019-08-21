@@ -18,10 +18,10 @@
             _apiClient = new ApiClient(apiToken);
         }
 
-        public async Task<IMe> GetMeAsync()
+        public async Task<IMeModel> GetMeAsync()
         {
             var content = await _apiClient.GetAsync("/me").ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<Me>(content);
+            return JsonConvert.DeserializeObject<MeModel>(content);
         }
     }
 }
