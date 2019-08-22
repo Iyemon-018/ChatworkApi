@@ -5,11 +5,15 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sources", "sources", "{39FE5BB8-E906-4435-8FCC-3CF1E22547C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatworkApi", "sources\ChatworkApi\ChatworkApi.csproj", "{3C5E5C5E-0480-429C-A8DF-B7AAF3EB34F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatworkApi", "sources\ChatworkApi\ChatworkApi.csproj", "{3C5E5C5E-0480-429C-A8DF-B7AAF3EB34F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debugs", "Debugs", "{C69B9C43-C818-41C4-9865-CD3B5EA0CC92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatworkApi.Debugs.Console", "Debugs\ChatworkApi.Debugs.Console\ChatworkApi.Debugs.Console.csproj", "{23973C70-2BD7-4871-99AB-1AA9B3E42DBE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7D323D7E-9FBE-46D9-B474-D4770C3FCFE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatworkApi.Tests", "Tests\ChatworkApi.Tests\ChatworkApi.Tests.csproj", "{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,10 @@ Global
 		{23973C70-2BD7-4871-99AB-1AA9B3E42DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23973C70-2BD7-4871-99AB-1AA9B3E42DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23973C70-2BD7-4871-99AB-1AA9B3E42DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3C5E5C5E-0480-429C-A8DF-B7AAF3EB34F6} = {39FE5BB8-E906-4435-8FCC-3CF1E22547C7}
 		{23973C70-2BD7-4871-99AB-1AA9B3E42DBE} = {C69B9C43-C818-41C4-9865-CD3B5EA0CC92}
+		{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0} = {7D323D7E-9FBE-46D9-B474-D4770C3FCFE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC801DCB-B998-4D1A-9737-12BB897B70A5}

@@ -19,7 +19,7 @@
 
         public async Task<string> GetAsync(string path, params (string key, object value)[] parameters)
         {
-            var requestUri     = $"{BaseUri}{path}{string.Join("?", ConvertToParameter(parameters))}";
+            var requestUri     = RequestUriGenerator.Generate(BaseUri, path, parameters);
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
             var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
@@ -33,7 +33,7 @@
 
         public async Task PostAsync(string path, params (string key, object value)[] parameters)
         {
-            var requestUri = $"{BaseUri}{path}{string.Join("?", ConvertToParameter(parameters))}";
+            var requestUri     = RequestUriGenerator.Generate(BaseUri, path, parameters);
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
 
             var response = await _httpClient.SendAsync(requestMessage);
@@ -43,7 +43,7 @@
 
         private IEnumerable<string> ConvertToParameter(IEnumerable<(string key, object value)> parameters)
             => parameters != null && parameters.Any()
-                   ? parameters.Where(x => x.value != null).Select(x => $"{x.key}={x.value}")
-                   : Enumerable.Empty<string>();
+                ? parameters.Where(x => x.value != null).Select(x => $"{x.key}={x.value}")
+                : Enumerable.Empty<string>();
     }
 }
