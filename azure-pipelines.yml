@@ -33,14 +33,6 @@ steps:
   inputs:
     command: 'test'
     projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
-    arguments: '--logger trx --results-directory $(Build.Repository.LocalPath)'
-
-- task: PublishTestResults@2
-  displayName: 'publish test results xUnit - .trx'
-  inputs:
-    testResultsFormat: 'XUnit'
-    testResultsFiles: '**/*.trx'
-    mergeTestResults: true
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
