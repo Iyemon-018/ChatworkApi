@@ -33,6 +33,9 @@ steps:
   inputs:
     command: 'test'
     projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
+    arguments: '--logger trx --results-directory $(Build.Repository.LocalPath)'
+    publishTestResults: false
+
 - task: PublishTestResults@2
   displayName: 'publish coverage results'
   inputs:
