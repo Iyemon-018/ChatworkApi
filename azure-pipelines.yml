@@ -33,6 +33,12 @@ steps:
   inputs:
     command: 'test'
     projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
+- task: PublishTestResults@2
+  displayName: 'publish coverage results'
+  inputs:
+    testResultsFormat: 'XUnit'
+    testResultsFiles: '**/*.trx'
+    mergeTestResults: true
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
