@@ -27,6 +27,18 @@ steps:
     projects: 'sources/ChatworkApi/ChatworkApi.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
+    arguments: '--logger trx --results-directory $(System.DefaultWorkingDirectory)'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'XUnit'
+    testResultsFiles: '**/*.trx'
+    mergeTestResults: true
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
