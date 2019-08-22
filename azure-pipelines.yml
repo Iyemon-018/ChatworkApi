@@ -22,18 +22,21 @@ steps:
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build ChatworkApi.csproj'
   inputs:
     command: 'build'
     projects: 'sources/ChatworkApi/ChatworkApi.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet test ChatworkApi.Tests.csproj'
   inputs:
     command: 'test'
     projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
-    arguments: '--logger trx --results-directory $(System.DefaultWorkingDirectory)'
+    arguments: '--logger trx --results-directory $(Build.Repository.LocalPath)'
 
 - task: PublishTestResults@2
+  displayName: 'publish test results xUnit - .trx'
   inputs:
     testResultsFormat: 'XUnit'
     testResultsFiles: '**/*.trx'
