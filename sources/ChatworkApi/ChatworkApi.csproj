@@ -2,12 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0</Version>
+    <Authors>Ishii Kenta</Authors>
+    <Company>MOTEX.Inc</Company>
+    <Description>Chatwork の API を使用するためのライブラリです。</Description>
+    <Copyright>Copyright ©2019 MOTEX.Inc</Copyright>
+    <PackageProjectUrl>https://dev.azure.com/iyemon018/Products/_git/ChatworkApi</PackageProjectUrl>
+    <RepositoryUrl>https://dev.azure.com/iyemon018/Products/_git/ChatworkApi</RepositoryUrl>
+    <PackageTags>Chatwork</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
