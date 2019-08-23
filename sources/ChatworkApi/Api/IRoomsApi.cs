@@ -34,15 +34,15 @@
         /// <returns>作成したグループチャットの ID を返します。</returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> が <c>null</c> もしくは <c>string.Empty</c> の場合にスローされます。</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="adminMembersIds"/> の要素数が <c>1</c> 未満の場合にスローされます。</exception>
-        Task<CreatedRoom> CreateNewRoomAsync(string             name
-                                           , int[]              adminMembersIds
-                                           , int[]              memberMembersIds
-                                           , int[]              readonlyMembersIds
-                                           , string             description
+        Task<CreatedRoom> CreateNewRoomAsync(string name
+                                           , int[] adminMembersIds
+                                           , int[] memberMembersIds
+                                           , int[] readonlyMembersIds
+                                           , string description
                                            , GroupChatIconType? iconType
-                                           , bool?              link
-                                           , string             linkCode
-                                           , bool?              needLinkAcceptance);
+                                           , bool? link
+                                           , string linkCode
+                                           , bool? needLinkAcceptance);
 
         /// <summary>
         /// 指定したグループチャットの構成を取得します。
@@ -59,9 +59,9 @@
         /// <param name="description">グループチャットの概要説明</param>
         /// <param name="iconType">グループチャットに表示するアイコンの種類</param>
         /// <returns>更新したグループチャットの構成を取得します。</returns>
-        Task<UpdatedRoomConfiguration> UpdateRoomConfigurationAsync(int                roomId
-                                                                  , string             name
-                                                                  , string             description
+        Task<UpdatedRoomConfiguration> UpdateRoomConfigurationAsync(int roomId
+                                                                  , string name
+                                                                  , string description
                                                                   , GroupChatIconType? iconType);
 
         /// <summary>
@@ -74,7 +74,7 @@
         /// <see cref="LeavingRoomAction.Delete"/> を選択すると、グループチャットに参加しているメンバー全員のメッセージ、タスク、ファイルがすべて削除されます。
         /// </param>
         /// <returns>非同期タスクを返します。</returns>
-        Task LeavingRoomAsync(int               roomId
+        Task LeavingRoomAsync(int roomId
                             , LeavingRoomAction action);
 
         /// <summary>
@@ -92,7 +92,7 @@
         /// <param name="memberMembersIds">メンバー権限を持つユーザーのIDリスト</param>
         /// <param name="readonlyMembersIds">読み取り専用権限のみ持つユーザーのIDリスト</param>
         /// <returns>メンバーの更新結果を返します。</returns>
-        Task<UpdatedRoomMember> UpdateRoomMembersAsync(int   roomId
+        Task<UpdatedRoomMember> UpdateRoomMembersAsync(int roomId
                                                      , int[] adminMembersIds
                                                      , int[] memberMembersIds
                                                      , int[] readonlyMembersIds);
@@ -107,7 +107,7 @@
         /// <c>false</c> もしくは <c>null</c> の場合、前回取得分からの差分を取得します。
         /// </param>
         /// <returns>最大 100 件までのメッセージを取得します。</returns>
-        Task<IEnumerable<Message>> GetMessagesAsync(int  roomId
+        Task<IEnumerable<Message>> GetMessagesAsync(int roomId
                                                   , int? force);
 
         /// <summary>
@@ -122,8 +122,80 @@
         /// メッセージを未読とするかどうか。<c>true</c> の場合、未読にします。<c>false</c> もしくは、<c>null</c> の場合、既読にします。
         /// </param>
         /// <returns>メッセージを追加したグループチャットの構成情報を返します。</returns>
-        Task<AddMessage> AddMessageAsync(int    roomId
+        Task<AddMessage> AddMessageAsync(int roomId
                                        , string body
-                                       , bool?  unread);
+                                       , bool? unread);
+
+        // TODO /rooms/{room_id}/messages/read
+
+        // TODO /rooms/{room_id}/messages/unread
+
+        // TODO /rooms/{room_id}/messages/{message_id}
+
+        // TODO /rooms/{room_id}/messages/{message_id}
+
+        // TODO /rooms/{room_id}/messages/{message_id}
+
+        /// <summary>
+        /// 指定したグループチャットのタスク一覧を取得します。
+        /// </summary>
+        /// <param name="roomId">取得対象のグループチャットID</param>
+        /// <param name="accountId">タスクの担当者に設定されているアカウントID</param>
+        /// <param name="assignedByAccountId">タスクの依頼者のアカウントID</param>
+        /// <param name="status">取得するタスクのステータス</param>
+        /// <returns>タスクの一覧を返します。</returns>
+        Task<IEnumerable<RoomTask>> GetRoomTasksAsync(int roomId
+                                                    , int? accountId
+                                                    , int assignedByAccountId
+                                                    , TaskStatus? status);
+
+        /// <summary>
+        /// 指定したグループチャットにタスクを追加します。
+        /// </summary>
+        /// <param name="roomId">追加対象のグループチャットID</param>
+        /// <param name="body">タスクの内容</param>
+        /// <param name="assignToIds">タスクの担当者のアカウントIDリスト</param>
+        /// <param name="limitType">タスクの期限種別</param>
+        /// <param name="limit">タスクの期限</param>
+        /// <returns>追加したタスクの情報を返します。</returns>
+        Task<AddTask> AddTaskAsync(int roomId
+                                 , string body
+                                 , int[] assignToIds
+                                 , TaskLimitType? limitType
+                                 , DateTime? limit);
+
+        /// <summary>
+        /// 指定したグループチャットのタスク情報を取得します。
+        /// </summary>
+        /// <param name="roomId">取得対象のグループチャットのID</param>
+        /// <param name="taskId">取得したいタスクのID</param>
+        /// <returns>タスク情報を返します。</returns>
+        Task<RoomTask> GetRoomTaskAsync(int roomId
+                                      , int taskId);
+
+        /// <summary>
+        /// 指定したグループチャットのタスクの状態を更新します。
+        /// </summary>
+        /// <param name="roomId">更新対象のタスクのあるグループチャットのID</param>
+        /// <param name="taskId">更新対象のタスクID</param>
+        /// <param name="status">更新後のタスク状態</param>
+        /// <returns>更新したタスク情報を返します。</returns>
+        Task<UpdatedTaskStatus> UpdateTaskStatusAsync(int roomId
+                                                    , int taskId
+                                                    , TaskStatus status);
+
+        // TODO /rooms/{room_id}/files
+
+        // TODO /rooms/{room_id}/files
+
+        // TODO /rooms/{room_id}/files/{file_id}
+
+        // TODO /rooms/{room_id}/link
+
+        // TODO /rooms/{room_id}/link
+
+        // TODO /rooms/{room_id}/link
+
+        // TODO /rooms/{room_id}/link
     }
 }
