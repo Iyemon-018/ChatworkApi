@@ -67,20 +67,20 @@
         {
             yield return new object[]
                          {
-                             -32400
-                             , new DateTime(1970, 1, 1,0, 0, 0), 
+                             0
+                             , new DateTimeOffset(new DateTime(1970, 1, 1,0, 0, 0)).LocalDateTime, 
                          };
 
             yield return new object[]
                          {
-                             -32399
-                           , new DateTime(1970, 1, 1,0, 0, 1),
+                             1
+                           , new DateTimeOffset(new DateTime(1970, 1, 1,0, 0, 1)).LocalDateTime,
                          };
 
             yield return new object[]
                          {
                              1566613821
-                           , new DateTime(2019, 8, 24,11, 30, 21),
+                           , new DateTimeOffset(new DateTime(2019, 8, 24,2, 30, 21)).LocalDateTime,
                          };
         }
 

@@ -21,6 +21,6 @@
         /// <param name="self">自分自身</param>
         /// <returns>変換結果の日時を返します。</returns>
         public static DateTime FromUnixTime(this long self)
-            => DateTimeOffset.FromUnixTimeSeconds(self).LocalDateTime;
+            => DateTimeOffset.FromUnixTimeSeconds(self).UtcDateTime;
     }
 }
