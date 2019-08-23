@@ -1,5 +1,8 @@
 ﻿namespace ChatworkApi.Models
 {
+    using System;
+    using Newtonsoft.Json;
+
     public sealed class MyTask
     {
         public int task_id { get; set; }
@@ -12,7 +15,9 @@
 
         public string body { get; set; }
 
-        public int limit_time { get; set; }
+        [JsonProperty]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? limit_time { get; set; }
 
         public string status { get; set; }
 

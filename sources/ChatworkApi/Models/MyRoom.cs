@@ -1,5 +1,8 @@
 ﻿namespace ChatworkApi.Models
 {
+    using System;
+    using Newtonsoft.Json;
+
     public class MyRoom
     {
         public int room_id { get; set; }
@@ -26,6 +29,8 @@
 
         public string icon_path { get; set; }
 
-        public int last_update_time { get; set; }
+        [JsonProperty]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? last_update_time { get; set; }
     }
 }
