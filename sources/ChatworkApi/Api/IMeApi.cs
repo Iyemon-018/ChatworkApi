@@ -12,6 +12,6 @@
         /// 自分自身の情報を非同期で取得します。
         /// </summary>
         /// <returns>自分自身の情報を返します。</returns>
-        Task<MeModel> GetAsync();
+        Task<Me> GetMeAsync();
     }
 }

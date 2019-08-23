@@ -13,6 +13,6 @@
         /// コンタクトの一覧を非同期で取得します。
         /// </summary>
         /// <returns>自分自身の全てのコンタクトを返します。</returns>
-        Task<IEnumerable<ContactModel>> GetAsync();
+        Task<IEnumerable<Contact>> GetContactsAsync();
     }
 }

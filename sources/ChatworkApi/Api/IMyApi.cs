@@ -1,5 +1,6 @@
 ﻿namespace ChatworkApi.Api
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Models;
 
@@ -12,7 +13,7 @@
         /// 自分自身のステータスを非同期で取得します。
         /// </summary>
         /// <returns>自分自身のステータスを返します。</returns>
-        Task<MyStatusModel> GetStatusAsync();
+        Task<MyStatus> GetMyStatusAsync();
 
         /// <summary>
         /// 自分自身に割り当てられたタスクを非同期で取得します。
@@ -23,6 +24,6 @@
         /// </param>
         /// <param name="status">タスクの状態</param>
         /// <returns>自分自身に割り当てられたステータスを返します。</returns>
-        Task<MyTaskModel> GetTasksAsync(int? assignedByAccountId, ChatworkApi.TaskStatus status);
+        Task<IEnumerable<MyTask>> GetMyTasksAsync(int? assignedByAccountId, ChatworkApi.TaskStatus status);
     }
 }

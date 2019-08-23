@@ -13,7 +13,7 @@
     /// <seealso cref="IMeApi"/>
     /// <seealso cref="IMyApi"/>
     /// <seealso cref="IContactsApi"/>
-    public sealed partial class ClientApi : IMeApi, IMyApi, IContactsApi
+    public sealed class ClientApi : IMeApi, IMyApi, IContactsApi
     {
         /// <summary>
         /// Web API を使用するためのクライアント機能です。
@@ -44,28 +44,12 @@
 
             return JsonConvert.DeserializeObject<TModel>(content);
         }
-    }
-
-    public partial class ClientApi
-    {
-        /// <summary>
-        /// /me API を呼び出します。
-        /// </summary>
-        public IMeApi Me => this;
 
         /// <summary>
         /// 自分自身の情報を非同期で取得します。
         /// </summary>
         /// <returns>自分自身の情報を返します。</returns>
-        Task<MeModel> IMeApi.GetAsync() => GetAsync<MeModel>("/me");
-    }
-
-    public partial class ClientApi
-    {
-        /// <summary>
-        /// /my API を呼び出します。
-        /// </summary>
-        public IMyApi My => this;
+        public Task<Me> GetMeAsync() => GetAsync<Me>("/me");
 
         private static IDictionary<TaskStatus, string> TaskStatusToValueMap
             => new Dictionary<TaskStatus, string>
@@ -78,7 +62,7 @@
         /// 自分自身のステータスを非同期で取得します。
         /// </summary>
         /// <returns>自分自身のステータスを返します。</returns>
-        Task<MyStatusModel> IMyApi.GetStatusAsync() => GetAsync<MyStatusModel>("/my/status");
+        public Task<MyStatus> GetMyStatusAsync() => GetAsync<MyStatus>("/my/status");
 
         /// <summary>
         /// 自分自身に割り当てられたタスクを非同期で取得します。
@@ -89,23 +73,15 @@
         /// </param>
         /// <param name="status">タスクの状態</param>
         /// <returns>自分自身に割り当てられたステータスを返します。</returns>
-        Task<MyTaskModel> IMyApi.GetTasksAsync(int? assignedByAccountId, TaskStatus status)
-            => GetAsync<MyTaskModel>("/my/status"
-                                   , ("assigned_by_account_id", $"{assignedByAccountId}")
-                                   , ("status", TaskStatusToValueMap[status]));
-    }
-
-    public partial class ClientApi
-    {
-        /// <summary>
-        /// /contacts API を呼び出します。
-        /// </summary>
-        public IContactsApi Contacts => this;
+        public Task<IEnumerable<MyTask>> GetMyTasksAsync(int? assignedByAccountId, TaskStatus status)
+            => GetAsync<IEnumerable<MyTask>>("/my/status"
+                                           , ("assigned_by_account_id", $"{assignedByAccountId}")
+                                           , ("status", TaskStatusToValueMap[status]));
 
         /// <summary>
         /// コンタクトの一覧を非同期で取得します。
         /// </summary>
         /// <returns>自分自身の全てのコンタクトを返します。</returns>
-        Task<IEnumerable<ContactModel>> IContactsApi.GetAsync() => GetAsync<IEnumerable<ContactModel>>("/contacts");
+        public Task<IEnumerable<Contact>> GetContactsAsync() => GetAsync<IEnumerable<Contact>>("/contacts");
     }
 }

@@ -1,8 +1,6 @@
 ﻿namespace ChatworkApi
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -24,7 +22,7 @@
 
             var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
-            if (!response.IsSuccessStatusCode) throw new NotImplementedException();
+            if (!response.IsSuccessStatusCode) throw new ApiRequestException(response.StatusCode, response.ReasonPhrase);
 
             var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -36,14 +34,9 @@
             var requestUri     = RequestUriGenerator.Generate(BaseUri, path, parameters);
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
 
-            var response = await _httpClient.SendAsync(requestMessage);
+            var response = await _httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
-            if (!response.IsSuccessStatusCode) throw new NotImplementedException();
+            if (!response.IsSuccessStatusCode) throw new ApiRequestException(response.StatusCode, response.ReasonPhrase);
         }
-
-        private IEnumerable<string> ConvertToParameter(IEnumerable<(string key, object value)> parameters)
-            => parameters != null && parameters.Any()
-                ? parameters.Where(x => x.value != null).Select(x => $"{x.key}={x.value}")
-                : Enumerable.Empty<string>();
     }
 }

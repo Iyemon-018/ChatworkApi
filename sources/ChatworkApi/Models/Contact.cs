@@ -1,6 +1,6 @@
 ﻿namespace ChatworkApi.Models
 {
-    public sealed class ContactModel
+    public sealed class Contact
     {
         public int    account_id        { get; set; }
 

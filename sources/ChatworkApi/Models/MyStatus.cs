@@ -1,6 +1,6 @@
 ﻿namespace ChatworkApi.Models
 {
-    public sealed class MyStatusModel
+    public sealed class MyStatus
     {
         public int unread_room_num { get; set; }
 
