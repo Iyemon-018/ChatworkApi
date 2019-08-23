@@ -39,14 +39,16 @@
         /// API パラメータを指定します。
         /// <c>key</c> はパラメータのキーを指定します。<c>value</c> は <c>key</c> の値を指定します。
         /// </param>
-        private async Task<TModel> GetAsync<TModel>(string path, params (string key, object value)[] parameters)
+        private async Task<TModel> GetAsync<TModel>(string                              path
+                                                  , params (string key, object value)[] parameters)
         {
             var content = await _apiClient.GetAsync(path, parameters);
 
             return JsonConvert.DeserializeObject<TModel>(content);
         }
 
-        private async Task<TModel> PostAsync<TModel>(string path, params (string key, object value)[] parameters)
+        private async Task<TModel> PostAsync<TModel>(string                              path
+                                                   , params (string key, object value)[] parameters)
         {
             var content = await _apiClient.PostAsync(path, parameters);
 
@@ -75,12 +77,13 @@
         /// <returns>自分自身の情報を返します。</returns>
         public Task<Me> GetMeAsync() => GetAsync<Me>("/me");
 
-        private static IDictionary<TaskStatus, string> TaskStatusToValueMap
-            => new Dictionary<TaskStatus, string>
-               {
-                   {TaskStatus.Open, "open"}
-                 , {TaskStatus.Done, "done"}
-               };
+        private static readonly Dictionary<TaskStatus?, string> TaskStatusToValueMap
+            = new Dictionary<TaskStatus?, string>
+              {
+                  {TaskStatus.Open, "open"}
+                , {TaskStatus.Done, "done"}
+                , {null, null}
+              };
 
         #endregion
 
@@ -101,7 +104,8 @@
         /// </param>
         /// <param name="status">タスクの状態</param>
         /// <returns>自分自身に割り当てられたステータスを返します。</returns>
-        public Task<IEnumerable<MyTask>> GetMyTasksAsync(int? assignedByAccountId, TaskStatus status)
+        public Task<IEnumerable<MyTask>> GetMyTasksAsync(int?       assignedByAccountId
+                                                       , TaskStatus status)
             => GetAsync<IEnumerable<MyTask>>("/my/status"
                                            , ("assigned_by_account_id", $"{assignedByAccountId}")
                                            , ("status", TaskStatusToValueMap[status]));
@@ -289,6 +293,75 @@
             => PostAsync<AddMessage>($"/rooms/{roomId}/messages"
                                    , ("body", body)
                                    , ("self_unread", unread));
+
+        /// <summary>
+        /// 指定したグループチャットのタスク一覧を取得します。
+        /// </summary>
+        /// <param name="roomId">取得対象のグループチャットID</param>
+        /// <param name="accountId">タスクの担当者に設定されているアカウントID</param>
+        /// <param name="assignedByAccountId">タスクの依頼者のアカウントID</param>
+        /// <param name="status">取得するタスクのステータス</param>
+        /// <returns>タスクの一覧を返します。</returns>
+        public Task<IEnumerable<RoomTask>> GetRoomTasksAsync(int         roomId
+                                                           , int?        accountId
+                                                           , int?        assignedByAccountId
+                                                           , TaskStatus? status)
+            => GetAsync<IEnumerable<RoomTask>>($"/rooms/{roomId}/tasks"
+                                             , ("account_id", accountId)
+                                             , ("assigned_by_account_id", assignedByAccountId)
+                                             , ("status", TaskStatusToValueMap[status]));
+
+        private static readonly Dictionary<TaskLimitType?, string> TaskLimitTypeToMap
+            = new Dictionary<TaskLimitType?, string>
+              {
+                  {null, null}
+                , {TaskLimitType.None, "none"}
+                , {TaskLimitType.Date, "date"}
+                , {TaskLimitType.Time, "time"}
+              };
+
+        /// <summary>
+        /// 指定したグループチャットにタスクを追加します。
+        /// </summary>
+        /// <param name="roomId">追加対象のグループチャットID</param>
+        /// <param name="body">タスクの内容</param>
+        /// <param name="assignToIds">タスクの担当者のアカウントIDリスト</param>
+        /// <param name="limitType">タスクの期限種別</param>
+        /// <param name="limit">タスクの期限</param>
+        /// <returns>追加したタスクの情報を返します。</returns>
+        public Task<AddTask> AddTaskAsync(int            roomId
+                                        , string         body
+                                        , int[]          assignToIds
+                                        , TaskLimitType? limitType
+                                        , DateTime?      limit)
+            => PostAsync<AddTask>($"/rooms/{roomId}/tasks"
+                                , ("body", body)
+                                , ("to_ids", assignToIds)
+                                , ("limit_type", TaskLimitTypeToMap[limitType])
+                                , ("limit", limit));
+
+        /// <summary>
+        /// 指定したグループチャットのタスク情報を取得します。
+        /// </summary>
+        /// <param name="roomId">取得対象のグループチャットのID</param>
+        /// <param name="taskId">取得したいタスクのID</param>
+        /// <returns>タスク情報を返します。</returns>
+        public Task<RoomTask> GetRoomTaskAsync(int roomId
+                                             , int taskId)
+            => GetAsync<RoomTask>($"/rooms/{roomId}/tasks/{taskId}");
+
+        /// <summary>
+        /// 指定したグループチャットのタスクの状態を更新します。
+        /// </summary>
+        /// <param name="roomId">更新対象のタスクのあるグループチャットのID</param>
+        /// <param name="taskId">更新対象のタスクID</param>
+        /// <param name="status">更新後のタスク状態</param>
+        /// <returns>更新したタスク情報を返します。</returns>
+        public Task<UpdatedTaskStatus> UpdateTaskStatusAsync(int        roomId
+                                                           , int        taskId
+                                                           , TaskStatus status)
+            => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}"
+                                         , ("body", TaskStatusToValueMap[status]));
 
         #endregion
     }

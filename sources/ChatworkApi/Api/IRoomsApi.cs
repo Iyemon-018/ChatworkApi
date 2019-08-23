@@ -146,8 +146,8 @@
         /// <returns>タスクの一覧を返します。</returns>
         Task<IEnumerable<RoomTask>> GetRoomTasksAsync(int roomId
                                                     , int? accountId
-                                                    , int assignedByAccountId
-                                                    , TaskStatus? status);
+                                                    , int? assignedByAccountId
+                                                    , ChatworkApi.TaskStatus? status);
 
         /// <summary>
         /// 指定したグループチャットにタスクを追加します。
@@ -182,7 +182,7 @@
         /// <returns>更新したタスク情報を返します。</returns>
         Task<UpdatedTaskStatus> UpdateTaskStatusAsync(int roomId
                                                     , int taskId
-                                                    , TaskStatus status);
+                                                    , ChatworkApi.TaskStatus status);
 
         // TODO /rooms/{room_id}/files
 
