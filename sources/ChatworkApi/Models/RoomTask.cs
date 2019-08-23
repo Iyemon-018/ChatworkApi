@@ -3,11 +3,11 @@
     using System;
     using Newtonsoft.Json;
 
-    public sealed class MyTask
+    public sealed class RoomTask
     {
         public int task_id { get; set; }
 
-        public Room room { get; set; }
+        public Account account { get; set; }
 
         public Account assigned_by_account { get; set; }
 
