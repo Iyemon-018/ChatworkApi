@@ -13,7 +13,7 @@
         /// <param name="self">自分自身</param>
         /// <returns>UNIX 時間に変換された結果を返します。</returns>
         public static long ToUnixTime(this DateTime self) =>
-            new DateTimeOffset(self.Ticks, new TimeSpan(9, 0, 0)).ToUnixTimeSeconds();
+            new DateTimeOffset(self.Ticks, TimeSpan.Zero).ToUnixTimeSeconds();
 
         /// <summary>
         /// UNIX 時刻を日時へ変換します。
