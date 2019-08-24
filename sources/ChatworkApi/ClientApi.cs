@@ -77,14 +77,6 @@
         /// <returns>自分自身の情報を返します。</returns>
         public Task<Me> GetMeAsync() => GetAsync<Me>("/me");
 
-        private static readonly Dictionary<TaskStatus?, string> TaskStatusToValueMap
-            = new Dictionary<TaskStatus?, string>
-              {
-                  {TaskStatus.Open, "open"}
-                , {TaskStatus.Done, "done"}
-                , {null, null}
-              };
-
         #endregion
 
         #region IMyApi
@@ -108,7 +100,7 @@
                                                        , TaskStatus status)
             => GetAsync<IEnumerable<MyTask>>("/my/status"
                                            , ("assigned_by_account_id", $"{assignedByAccountId}")
-                                           , ("status", TaskStatusToValueMap[status]));
+                                           , ("status", status.ToParameterValue()));
 
         #endregion
 
@@ -129,29 +121,6 @@
         /// </summary>
         /// <returns>自分のチャット情報を全て返します。</returns>
         public Task<MyRoom> GetMyRoomsAsync() => GetAsync<MyRoom>("/rooms");
-
-        private static readonly Dictionary<GroupChatIconType?, string> GroupChatIconTypeToValueMap
-            = new Dictionary<GroupChatIconType?, string>
-              {
-                  {null, null}
-                , {GroupChatIconType.Group, "group"}
-                , {GroupChatIconType.Check, "check"}
-                , {GroupChatIconType.Document, "document"}
-                , {GroupChatIconType.Meeting, "meeting"}
-                , {GroupChatIconType.Event, "event"}
-                , {GroupChatIconType.Project, "project"}
-                , {GroupChatIconType.Business, "business"}
-                , {GroupChatIconType.Study, "study"}
-                , {GroupChatIconType.Security, "security"}
-                , {GroupChatIconType.Star, "star"}
-                , {GroupChatIconType.Idea, "idea"}
-                , {GroupChatIconType.Heart, "heart"}
-                , {GroupChatIconType.Magcup, "magcup"}
-                , {GroupChatIconType.Beer, "beer"}
-                , {GroupChatIconType.Music, "music"}
-                , {GroupChatIconType.Sports, "sports"}
-                , {GroupChatIconType.Travel, "travel"}
-              };
 
         /// <summary>
         /// グループチャットを新規作成します。
@@ -183,7 +152,7 @@
                                     , ("members_member_ids", memberMembersIds)
                                     , ("members_readonly_ids", readonlyMembersIds)
                                     , ("description", description)
-                                    , ("icon_preset", GroupChatIconTypeToValueMap[iconType])
+                                    , ("icon_preset", iconType?.ToParameterValue())
                                     , ("link", link)
                                     , ("link_code", linkCode)
                                     , ("link_need_acceptance", needLinkAcceptance));
@@ -211,14 +180,7 @@
             => PutAsync<UpdatedRoomConfiguration>($"/rooms/{roomId}"
                                                 , ("name", name)
                                                 , ("description", description)
-                                                , ("icon_preset", GroupChatIconTypeToValueMap[iconType]));
-
-        private static readonly Dictionary<LeavingRoomAction, string> LeavingRoomActionToValue
-            = new Dictionary<LeavingRoomAction, string>
-              {
-                  {LeavingRoomAction.Leave, "leave"}
-                , {LeavingRoomAction.Delete, "delete"}
-              };
+                                                , ("icon_preset", iconType?.ToParameterValue()));
 
         /// <summary>
         /// 指定したグループチャットから退室します。
@@ -233,7 +195,7 @@
         public Task LeavingRoomAsync(int               roomId
                                    , LeavingRoomAction action)
             => DeleteAsync($"/rooms/{roomId}"
-                         , ("action_type", LeavingRoomActionToValue[action]));
+                         , ("action_type", action.ToParameterValue()));
 
         /// <summary>
         /// 指定したグループチャットに参加しているメンバーの情報を取得します。
@@ -309,16 +271,7 @@
             => GetAsync<IEnumerable<RoomTask>>($"/rooms/{roomId}/tasks"
                                              , ("account_id", accountId)
                                              , ("assigned_by_account_id", assignedByAccountId)
-                                             , ("status", TaskStatusToValueMap[status]));
-
-        private static readonly Dictionary<TaskLimitType?, string> TaskLimitTypeToMap
-            = new Dictionary<TaskLimitType?, string>
-              {
-                  {null, null}
-                , {TaskLimitType.None, "none"}
-                , {TaskLimitType.Date, "date"}
-                , {TaskLimitType.Time, "time"}
-              };
+                                             , ("status", status?.ToParameterValue()));
 
         /// <summary>
         /// 指定したグループチャットにタスクを追加します。
@@ -337,7 +290,7 @@
             => PostAsync<AddTask>($"/rooms/{roomId}/tasks"
                                 , ("body", body)
                                 , ("to_ids", assignToIds)
-                                , ("limit_type", TaskLimitTypeToMap[limitType])
+                                , ("limit_type", limitType?.ToParameterValue())
                                 , ("limit", limit));
 
         /// <summary>
@@ -361,7 +314,7 @@
                                                            , int        taskId
                                                            , TaskStatus status)
             => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}"
-                                         , ("body", TaskStatusToValueMap[status]));
+                                         , ("body", status.ToParameterValue()));
 
         #endregion
     }

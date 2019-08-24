@@ -5,8 +5,10 @@
     /// </summary>
     public enum LeavingRoomAction
     {
+        [ParameterValue("leave")]
         Leave,
 
+        [ParameterValue("delete")]
         Delete,
     }
 }
