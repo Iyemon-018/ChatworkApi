@@ -120,7 +120,7 @@
         /// 自分のチャット一覧を非同期で取得します。
         /// </summary>
         /// <returns>自分のチャット情報を全て返します。</returns>
-        public Task<MyRoom> GetMyRoomsAsync() => GetAsync<MyRoom>("/rooms");
+        public Task<IEnumerable<MyRoom>> GetMyRoomsAsync() => GetAsync<IEnumerable<MyRoom>>("/rooms");
 
         /// <summary>
         /// グループチャットを新規作成します。
@@ -203,7 +203,7 @@
         /// <param name="roomId">取得対象のグループチャットのID</param>
         /// <returns>グループチャットに参加しているメンバーの情報シーケンスを返します。</returns>
         public Task<IEnumerable<RoomMember>> GetRoomMembersAsync(int roomId)
-            => GetAsync<IEnumerable<RoomMember>>($"/rooms/{roomId}");
+            => GetAsync<IEnumerable<RoomMember>>($"/rooms/{roomId}/members");
 
         /// <summary>
         /// 指定したグループチャットのメンバーを更新します。
@@ -217,7 +217,7 @@
                                                             , int[] adminMembersIds
                                                             , int[] memberMembersIds
                                                             , int[] readonlyMembersIds)
-            => PutAsync<UpdatedRoomMember>($"/rooms/{roomId}"
+            => PutAsync<UpdatedRoomMember>($"/rooms/{roomId}/members"
                                          , ("members_admin_ids", adminMembersIds)
                                          , ("members_member_ids", memberMembersIds)
                                          , ("members_readonly_ids", readonlyMembersIds));
@@ -233,7 +233,7 @@
         /// </param>
         /// <returns>最大 100 件までのメッセージを取得します。</returns>
         public Task<IEnumerable<Message>> GetMessagesAsync(int  roomId
-                                                         , int? force)
+                                                         , bool? force)
             => GetAsync<IEnumerable<Message>>($"/rooms/{roomId}/messages"
                                             , ("force", force));
 

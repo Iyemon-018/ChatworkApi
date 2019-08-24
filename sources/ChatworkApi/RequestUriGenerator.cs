@@ -32,7 +32,7 @@
 
         private IEnumerable<string> ConvertToParameter(IEnumerable<(string key, object value)> parameters)
             => parameters != null && parameters.Any()
-                ? parameters.Where(x => x.value != null).Select(x => $"{x.key}={x.value}")
+                ? parameters.Where(x => x.value != null).Select(x => $"{x.key}={ParameterGenerator.ConvertToValue(x.value)}")
                 : Enumerable.Empty<string>();
 
         public static string Generate(string baseUri, string path, params (string key, object value)[] parameters)

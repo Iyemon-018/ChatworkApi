@@ -17,7 +17,7 @@
         /// 自分のチャット一覧を非同期で取得します。
         /// </summary>
         /// <returns>自分のチャット情報を全て返します。</returns>
-        Task<MyRoom> GetMyRoomsAsync();
+        Task<IEnumerable<MyRoom>> GetMyRoomsAsync();
 
         /// <summary>
         /// グループチャットを新規作成します。
@@ -108,7 +108,7 @@
         /// </param>
         /// <returns>最大 100 件までのメッセージを取得します。</returns>
         Task<IEnumerable<Message>> GetMessagesAsync(int roomId
-                                                  , int? force);
+                                                  , bool? force);
 
         /// <summary>
         /// 指定したグループチャットにメッセージを追加します。
