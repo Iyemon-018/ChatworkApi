@@ -4,14 +4,36 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- develop
+- feature/*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 
+    checkLatest: true
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build ChatworkApi.csproj'
+  inputs:
+    command: 'build'
+    projects: 'sources/ChatworkApi/ChatworkApi.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test ChatworkApi.Tests.csproj'
+  inputs:
+    command: 'test'
+    projects: 'Tests/ChatworkApi.Tests/ChatworkApi.Tests.csproj'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
