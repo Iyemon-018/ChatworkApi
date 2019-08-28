@@ -89,6 +89,22 @@
             Output(actual);
         }
 
+        [Fact]
+        public void Test_正常_To_All()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.To.All()
+                                .Add("重要なお知らせ。")
+                                .Build();
+
+            // assert
+            Assert.Equal("[toall]重要なお知らせ。", actual);
+            Output(actual);
+        }
+
         #endregion
 
         #region Information

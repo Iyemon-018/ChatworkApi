@@ -26,6 +26,8 @@
     public interface IToMessage
     {
         IMessageBuilder Add(int accountId);
+
+        IMessageBuilder All();
     }
 
     public partial class MessageBuilder
@@ -35,6 +37,13 @@
         IMessageBuilder IToMessage.Add(int accountId)
         {
             _message.Append($"[To:{accountId}]");
+
+            return this;
+        }
+
+        IMessageBuilder IToMessage.All()
+        {
+            _message.Append("[toall]");
 
             return this;
         }
