@@ -2,11 +2,11 @@
 {
     using System.Text;
 
-    public sealed partial class MessageBuilder : IMessageBuilder, IToMessage, IReplyMessage
+    public sealed partial class MessageBuilder : IMessageBuilder, IToMessage, IReplyMessage, IInformationMessage
     {
         private readonly StringBuilder _message = new StringBuilder();
 
-        IMessageBuilder IMessageBuilder.AddMessage(string message)
+        public IMessageBuilder Add(string message)
         {
             _message.Append(message);
 
@@ -67,10 +67,40 @@
 
         IReplyMessage Reply { get; }
 
+        IInformationMessage Information { get; }
+
         string Build();
 
-        IMessageBuilder AddMessage(string message);
+        IMessageBuilder Add(string message);
 
         IMessageBuilder AddNewLine();
+    }
+
+    public interface IInformationMessage
+    {
+        IMessageBuilder Add(string message);
+
+        IMessageBuilder Add(string title
+                          , string message);
+    }
+
+    public partial class MessageBuilder
+    {
+        public IInformationMessage Information => this;
+
+        IMessageBuilder IInformationMessage.Add(string message)
+        {
+            _message.Append($"[info]{message}[/info]");
+
+            return this;
+        }
+
+        IMessageBuilder IInformationMessage.Add(string title
+                                              , string message)
+        {
+            _message.Append($"[info][title]{title}[/title]{message}[/info]");
+
+            return this;
+        }
     }
 }
