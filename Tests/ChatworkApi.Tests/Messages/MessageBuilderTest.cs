@@ -2,6 +2,7 @@
 {
     using System;
     using ChatworkApi.Messages;
+    using Models;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -14,6 +15,50 @@
         public MessageBuilderTest(ITestOutputHelper outputHelper) : base(outputHelper)
         {
         }
+
+        #region Add
+        // TODO test Add() method
+        #endregion
+
+        #region AddRuledLine
+
+        [Fact]
+        public void Test_正常_AddRuledLine()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.AddRuledLine().Build();
+
+            // assert
+            Assert.Equal("[hr]", actual);
+            Output(actual);
+        }
+
+        [Fact]
+        public void Test_正常_AddRuledLine_改行付き()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.Add("罫線引いてみた。")
+                                .AddNewLine()
+                                .AddRuledLine()
+                                .AddNewLine()
+                                .Add("こんな感じになる。")
+                                .Build();
+
+            // assert
+            Assert.Equal($"罫線引いてみた。{Environment.NewLine}"
+                         + $"[hr]{Environment.NewLine}"
+                         + $"こんな感じになる。"
+                         ,actual);
+            Output(actual);
+        }
+
+        #endregion
 
         #region To
 
@@ -44,6 +89,49 @@
 
             // assert
             Assert.Equal("[To:9876543]講義のご連絡ありがとうございます。", actual);
+            Output(actual);
+        }
+
+        [Fact]
+        public void Test_正常_To_Account指定()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.To.Add(new Account
+                                        {
+                                            name             = "山田 太郎"
+                                          , account_id       = 99912
+                                          , avatar_image_url = string.Empty
+                                        })
+                                .Build();
+
+            // assert
+            Assert.Equal("[To:99912]山田 太郎", actual);
+            Output(actual);
+        }
+
+        [Fact]
+        public void Test_正常_To_Account指定_Message付き()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.To.Add(new Account
+                                        {
+                                            name             = "山田 太郎"
+                                          , account_id       = 99912
+                                          , avatar_image_url = string.Empty
+                                        })
+                                .AddNewLine()
+                                .Add("講義のご連絡ありがとうございます。")
+                                .Build();
+
+            // assert
+            Assert.Equal($"[To:99912]山田 太郎{Environment.NewLine}"
+                         + $"講義のご連絡ありがとうございます。", actual);
             Output(actual);
         }
 
@@ -87,6 +175,36 @@
                          + $"[To:2222]"
                        , actual);
             Output(actual);
+        }
+
+        [Fact]
+        public void Test_正常_To_ユーザー名指定()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.To.Add(1987, "山田 太郎さん").Build();
+
+            // assert
+            Assert.Equal("[To:1987]山田 太郎さん", actual);
+        }
+
+        [Fact]
+        public void Test_正常_To_ユーザー名指定とメッセージ()
+        {
+            // arrange
+            var builder = new MessageBuilder();
+
+            // act
+            var actual = builder.To.Add(1987, "山田 太郎さん")
+                                .AddNewLine()
+                                .Add("お疲れさまです。")
+                                .Build();
+
+            // assert
+            Assert.Equal($"[To:1987]山田 太郎さん{Environment.NewLine}"
+                         + $"お疲れさまです。", actual);
         }
 
         [Fact]
