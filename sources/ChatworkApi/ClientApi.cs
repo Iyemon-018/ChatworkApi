@@ -63,11 +63,17 @@
             return JsonConvert.DeserializeObject<TModel>(content);
         }
 
-        private async Task DeleteAsync(string                              path
-                                     , params (string key, object value)[] parameters)
+        private async Task<TModel> DeleteAsync<TModel>(string                              path
+                                                     , params (string key, object value)[] parameters)
         {
-            await _apiClient.DeleteAsync(path, parameters);
+            var content = await _apiClient.DeleteAsync(path, parameters);
+
+            return JsonConvert.DeserializeObject<TModel>(content);
         }
+
+        private async Task DeleteAsync(string                              path
+                                     , params (string key, object value)[] parameters) =>
+            await _apiClient.DeleteAsync(path, parameters);
 
         #region IMeApi
 
@@ -232,7 +238,7 @@
         /// <c>false</c> もしくは <c>null</c> の場合、前回取得分からの差分を取得します。
         /// </param>
         /// <returns>最大 100 件までのメッセージを取得します。</returns>
-        public Task<IEnumerable<Message>> GetMessagesAsync(int  roomId
+        public Task<IEnumerable<Message>> GetMessagesAsync(int   roomId
                                                          , bool? force)
             => GetAsync<IEnumerable<Message>>($"/rooms/{roomId}/messages"
                                             , ("force", force));
@@ -255,6 +261,60 @@
             => PostAsync<AddMessage>($"/rooms/{roomId}/messages"
                                    , ("body", body)
                                    , ("self_unread", unread));
+
+        /// <summary>
+        /// 指定したメッセージを既読にします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">既読にするメッセージID</param>
+        /// <returns>既読にしたメッセージ情報を返します。</returns>
+        public Task<ReadMessage> ReadMessageAsync(int    roomId
+                                                , string messageId)
+            => PutAsync<ReadMessage>($"/rooms/{roomId}/messages/read", ("message_id", messageId));
+
+        /// <summary>
+        /// 指定したメッセージを未読にします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">未読にするメッセージID</param>
+        /// <returns>未読にしたメッセージ情報を返します。</returns>
+        public Task<UnreadMessage> UnreadMessageAsync(int    roomId
+                                                    , string messageId)
+            => PutAsync<UnreadMessage>($"/rooms/{roomId}/messages/unread"
+                                     , ("message_id", messageId));
+
+        /// <summary>
+        /// 指定したルームのメッセージ情報を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">取得したいメッセージID</param>
+        /// <returns>メッセージ情報を返します。</returns>
+        public Task<Message> GetMessageAsync(int    roomId
+                                           , string messageId)
+            => GetAsync<Message>($"/rooms/{roomId}/messages/{messageId}");
+
+        /// <summary>
+        /// 指定したメッセージ本文を更新します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">更新したいメッセージID</param>
+        /// <param name="body">更新するメッセージ本文</param>
+        /// <returns>更新したメッセージ情報を返します。</returns>
+        public Task<UpdatedMessage> UpdateMessageAsync(int    roomId
+                                                     , string messageId
+                                                     , string body)
+            => PutAsync<UpdatedMessage>($"/rooms/{roomId}/messages/{messageId}"
+                                      , ("body", body));
+
+        /// <summary>
+        /// 指定したメッセージを削除します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">削除したいメッセージID</param>
+        /// <returns>削除したメッセージ情報を返します。</returns>
+        public Task<DeletedMessage> DeleteMessageAsync(int    roomId
+                                                     , string messageId)
+            => DeleteAsync<DeletedMessage>($"/rooms/{roomId}/messages/{messageId}");
 
         /// <summary>
         /// 指定したグループチャットのタスク一覧を取得します。
@@ -315,6 +375,105 @@
                                                            , TaskStatus status)
             => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}"
                                          , ("body", status.ToParameterValue()));
+
+        /// <summary>
+        /// 指定したチャット ルーム内のファイル一覧を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="accountId">取得したいファイルをアップロードしたユーザーのアカウントID</param>
+        /// <returns>ファイル情報を取得します。</returns>
+        public Task<IEnumerable<FileData>> GetFilesAsync(int roomId
+                                                       , int accountId)
+            => GetAsync<IEnumerable<FileData>>($"/rooms/{roomId}/files"
+                                             , ("account_id", accountId));
+
+        /// <summary>
+        /// 指定したチャット ルームにファイルをアップロードします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="file">アップロードするファイルパス</param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public Task<UploadedFileData> UploadFileAsync(int    roomId
+                                                    , string file
+                                                    , string message)
+            => PutAsync<UploadedFileData>($"/rooms/{roomId}/files"
+                                        , ("file", file)
+                                        , ("message", message));
+
+        /// <summary>
+        /// ファイル情報を取得するための情報を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="fileId">ファイルID</param>
+        /// <param name="createDownloadUrl">
+        /// 30秒間だけダウンロード可能なURLを生成するかどうか。
+        /// <c>true</c>の場合、URLを生成します。
+        /// <c>false</c> もしくは<c>null</c> の場合、URLは生成しません。
+        /// </param>
+        /// <returns>ファイル情報を返します。</returns>
+        public Task<FileData> GetFileAsync(int   roomId
+                                         , int   fileId
+                                         , bool? createDownloadUrl)
+            => GetAsync<FileData>($"/rooms/{roomId}/files/{fileId}"
+                                , ("create_download_url", createDownloadUrl));
+
+        /// <summary>
+        /// 招待リンクを取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <returns>招待リンク情報を取得します。</returns>
+        public Task<InviteLink> GetInviteLink(int roomId) => GetAsync<InviteLink>($"/rooms/{roomId}/link");
+
+        /// <summary>
+        /// 招待リンクを作成します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="code">リンクのパス部分に該当する文字列。<c>null</c> もしくは、<c>string.Empty</c> の場合、ランダムな文字列になります。</param>
+        /// <param name="description">リンクページに表示される説明文です。</param>
+        /// <param name="needAcceptance">
+        /// 参加に管理者の承認を必要とするかどうか。
+        /// <c>true</c> の場合、承認が必要になります。
+        /// <c>false</c> もしくは <c>null</c> の場合、承認は不要になります。
+        /// </param>
+        /// <returns>招待リンクの情報を返します。</returns>
+        public Task<InviteLink> CreateInviteLink(int    roomId
+                                               , string code
+                                               , string description
+                                               , bool?  needAcceptance)
+            => PostAsync<InviteLink>($"/rooms/{roomId}/link"
+                                   , ("code", code)
+                                   , ("description", description)
+                                   , ("need_acceptance", needAcceptance));
+
+        /// <summary>
+        /// 招待リンクを更新します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="code">リンクのパス部分に該当する文字列。<c>null</c> もしくは、<c>string.Empty</c> の場合、ランダムな文字列になります。</param>
+        /// <param name="description">リンクページに表示される説明文です。</param>
+        /// <param name="needAcceptance">
+        /// 参加に管理者の承認を必要とするかどうか。
+        /// <c>true</c> の場合、承認が必要になります。
+        /// <c>false</c> もしくは <c>null</c> の場合、承認は不要になります。
+        /// </param>
+        /// <returns>更新した招待リンクの情報を返します。</returns>
+        public Task<InviteLink> UpdateInviteLink(int    roomId
+                                               , string code
+                                               , string description
+                                               , bool?  needAcceptance)
+            => PutAsync<InviteLink>($"/rooms/{roomId}/link"
+                                   , ("code", code)
+                                   , ("description", description)
+                                   , ("need_acceptance", needAcceptance));
+
+        /// <summary>
+        /// 指定した招待リンクを削除します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <returns>削除した招待リンクの情報を返します。</returns>
+        public Task<DeletedInviteLink> DeleteInviteLink(int roomId)
+            => DeleteAsync<DeletedInviteLink>($"/rooms/{roomId}/link");
 
         #endregion
     }

@@ -126,15 +126,52 @@
                                        , string body
                                        , bool? unread);
 
-        // TODO /rooms/{room_id}/messages/read
+        /// <summary>
+        /// 指定したメッセージを既読にします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">既読にするメッセージID</param>
+        /// <returns>既読にしたメッセージ情報を返します。</returns>
+        Task<ReadMessage> ReadMessageAsync(int roomId
+                                         , string messageId);
 
-        // TODO /rooms/{room_id}/messages/unread
+        /// <summary>
+        /// 指定したメッセージを未読にします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">未読にするメッセージID</param>
+        /// <returns>未読にしたメッセージ情報を返します。</returns>
+        Task<UnreadMessage> UnreadMessageAsync(int roomId
+                                             , string messageId);
 
-        // TODO /rooms/{room_id}/messages/{message_id}
+        /// <summary>
+        /// 指定したルームのメッセージ情報を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">取得したいメッセージID</param>
+        /// <returns>メッセージ情報を返します。</returns>
+        Task<Message> GetMessageAsync(int roomId
+                                    , string messageId);
 
-        // TODO /rooms/{room_id}/messages/{message_id}
+        /// <summary>
+        /// 指定したメッセージ本文を更新します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">更新したいメッセージID</param>
+        /// <param name="body">更新するメッセージ本文</param>
+        /// <returns>更新したメッセージ情報を返します。</returns>
+        Task<UpdatedMessage> UpdateMessageAsync(int roomId
+                                              , string messageId
+                                              , string body);
 
-        // TODO /rooms/{room_id}/messages/{message_id}
+        /// <summary>
+        /// 指定したメッセージを削除します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="messageId">削除したいメッセージID</param>
+        /// <returns>削除したメッセージ情報を返します。</returns>
+        Task<DeletedMessage> DeleteMessageAsync(int roomId
+                                              , string messageId);
 
         /// <summary>
         /// 指定したグループチャットのタスク一覧を取得します。
@@ -184,18 +221,87 @@
                                                     , int taskId
                                                     , ChatworkApi.TaskStatus status);
 
-        // TODO /rooms/{room_id}/files
+        /// <summary>
+        /// 指定したチャット ルーム内のファイル一覧を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="accountId">取得したいファイルをアップロードしたユーザーのアカウントID</param>
+        /// <returns>ファイル情報を取得します。</returns>
+        Task<IEnumerable<FileData>> GetFilesAsync(int roomId
+                                               , int accountId);
 
-        // TODO /rooms/{room_id}/files
+        /// <summary>
+        /// 指定したチャット ルームにファイルをアップロードします。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="file">アップロードするファイルパス</param>
+        /// <param name="message">追加するコメント メッセージ</param>
+        /// <returns>アップロードしたファイル情報を返します。；</returns>
+        Task<UploadedFileData> UploadFileAsync(int roomId
+                                             , string file
+                                             , string message);
 
-        // TODO /rooms/{room_id}/files/{file_id}
+        /// <summary>
+        /// ファイル情報を取得するための情報を取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="fileId">ファイルID</param>
+        /// <param name="createDownloadUrl">
+        /// 30秒間だけダウンロード可能なURLを生成するかどうか。
+        /// <c>true</c>の場合、URLを生成します。
+        /// <c>false</c> もしくは<c>null</c> の場合、URLは生成しません。
+        /// </param>
+        /// <returns>ファイル情報を返します。</returns>
+        Task<FileData> GetFileAsync(int roomId
+                                  , int fileId
+                                  , bool? createDownloadUrl);
 
-        // TODO /rooms/{room_id}/link
+        /// <summary>
+        /// 招待リンクを取得します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <returns>招待リンク情報を取得します。</returns>
+        Task<InviteLink> GetInviteLink(int roomId);
 
-        // TODO /rooms/{room_id}/link
+        /// <summary>
+        /// 招待リンクを作成します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="code">リンクのパス部分に該当する文字列。<c>null</c> もしくは、<c>string.Empty</c> の場合、ランダムな文字列になります。</param>
+        /// <param name="description">リンクページに表示される説明文です。</param>
+        /// <param name="needAcceptance">
+        /// 参加に管理者の承認を必要とするかどうか。
+        /// <c>true</c> の場合、承認が必要になります。
+        /// <c>false</c> もしくは <c>null</c> の場合、承認は不要になります。
+        /// </param>
+        /// <returns>招待リンクの情報を返します。</returns>
+        Task<InviteLink> CreateInviteLink(int roomId
+                                        , string code
+                                        , string description
+                                        , bool? needAcceptance);
 
-        // TODO /rooms/{room_id}/link
+        /// <summary>
+        /// 招待リンクを更新します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <param name="code">リンクのパス部分に該当する文字列。<c>null</c> もしくは、<c>string.Empty</c> の場合、ランダムな文字列になります。</param>
+        /// <param name="description">リンクページに表示される説明文です。</param>
+        /// <param name="needAcceptance">
+        /// 参加に管理者の承認を必要とするかどうか。
+        /// <c>true</c> の場合、承認が必要になります。
+        /// <c>false</c> もしくは <c>null</c> の場合、承認は不要になります。
+        /// </param>
+        /// <returns>更新した招待リンクの情報を返します。</returns>
+        Task<InviteLink> UpdateInviteLink(int roomId
+                                        , string code
+                                        , string description
+                                        , bool? needAcceptance);
 
-        // TODO /rooms/{room_id}/link
+        /// <summary>
+        /// 指定した招待リンクを削除します。
+        /// </summary>
+        /// <param name="roomId">ルームID</param>
+        /// <returns>削除した招待リンクの情報を返します。</returns>
+        Task<DeletedInviteLink> DeleteInviteLink(int roomId);
     }
 }
