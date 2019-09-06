@@ -106,7 +106,7 @@
                                                        , TaskStatus status)
             => GetAsync<IEnumerable<MyTask>>("/my/status"
                                            , ("assigned_by_account_id", $"{assignedByAccountId}")
-                                           , ("status", status.ToParameterValue()));
+                                           , ("status", status.ToAlias()));
 
         #endregion
 
@@ -158,7 +158,7 @@
                                     , ("members_member_ids", memberMembersIds)
                                     , ("members_readonly_ids", readonlyMembersIds)
                                     , ("description", description)
-                                    , ("icon_preset", iconType?.ToParameterValue())
+                                    , ("icon_preset", iconType?.ToAlias())
                                     , ("link", link)
                                     , ("link_code", linkCode)
                                     , ("link_need_acceptance", needLinkAcceptance));
@@ -186,7 +186,7 @@
             => PutAsync<UpdatedRoomConfiguration>($"/rooms/{roomId}"
                                                 , ("name", name)
                                                 , ("description", description)
-                                                , ("icon_preset", iconType?.ToParameterValue()));
+                                                , ("icon_preset", iconType?.ToAlias()));
 
         /// <summary>
         /// 指定したグループチャットから退室します。
@@ -201,7 +201,7 @@
         public Task LeavingRoomAsync(int               roomId
                                    , LeavingRoomAction action)
             => DeleteAsync($"/rooms/{roomId}"
-                         , ("action_type", action.ToParameterValue()));
+                         , ("action_type", action.ToAlias()));
 
         /// <summary>
         /// 指定したグループチャットに参加しているメンバーの情報を取得します。
@@ -331,7 +331,7 @@
             => GetAsync<IEnumerable<RoomTask>>($"/rooms/{roomId}/tasks"
                                              , ("account_id", accountId)
                                              , ("assigned_by_account_id", assignedByAccountId)
-                                             , ("status", status?.ToParameterValue()));
+                                             , ("status", status?.ToAlias()));
 
         /// <summary>
         /// 指定したグループチャットにタスクを追加します。
@@ -350,7 +350,7 @@
             => PostAsync<AddTask>($"/rooms/{roomId}/tasks"
                                 , ("body", body)
                                 , ("to_ids", assignToIds)
-                                , ("limit_type", limitType?.ToParameterValue())
+                                , ("limit_type", limitType?.ToAlias())
                                 , ("limit", limit));
 
         /// <summary>
@@ -374,7 +374,7 @@
                                                            , int        taskId
                                                            , TaskStatus status)
             => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}"
-                                         , ("body", status.ToParameterValue()));
+                                         , ("body", status.ToAlias()));
 
         /// <summary>
         /// 指定したチャット ルーム内のファイル一覧を取得します。

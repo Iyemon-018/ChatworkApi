@@ -3,11 +3,11 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public sealed class ParameterValueAttribute : Attribute
+    public sealed class AliasAttribute : Attribute
     {
         public string Value { get; }
 
-        public ParameterValueAttribute(string value)
+        public AliasAttribute(string value)
         {
             Value = value;
         }

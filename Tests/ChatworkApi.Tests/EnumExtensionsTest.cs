@@ -17,19 +17,19 @@
 
         public enum TestType
         {
-            [ParameterValue("method")]
+            [Alias("method")]
             Method,
 
-            [ParameterValue("property")]
+            [Alias("property")]
             Property,
 
-            [ParameterValue("inner class")]
+            [Alias("inner class")]
             InnerClass,
 
             None,
         }
 
-        #region ToParameterValue Method
+        #region ToAlias Method
 
         public static IEnumerable<object[]> Get_Test_正常_ToParameterValue_Data()
         {
@@ -54,7 +54,7 @@
             // arrange
 
             // act
-            var actual = target.ToParameterValue();
+            var actual = target.ToAlias();
 
             // assert
             Assert.Equal(expected, actual);
@@ -67,7 +67,7 @@
             // arrange
 
             // act
-            var ex = Record.Exception(() => 1.ToParameterValue());
+            var ex = Record.Exception(() => 1.ToAlias());
 
             // assert
             Assert.IsType<TypeAccessException>(ex);
@@ -80,7 +80,7 @@
             // arrange
 
             // act
-            var ex = Record.Exception(() => DateTime.Now.ToParameterValue());
+            var ex = Record.Exception(() => DateTime.Now.ToAlias());
 
             // assert
             Assert.IsType<TypeAccessException>(ex);
@@ -93,7 +93,7 @@
             TestType testType = TestType.Method;
 
             // parameterValue = "method";
-            string parameterValue = testType.ToParameterValue();
+            string parameterValue = testType.ToAlias();
 
             Assert.Equal("method", parameterValue);
         }
@@ -107,7 +107,7 @@
             TestType? testType = GetTestType();
 
             // parameterValue = "property";
-            string parameterValue = testType?.ToParameterValue();
+            string parameterValue = testType?.ToAlias();
 
             Assert.Equal("property", parameterValue);
         }
@@ -121,7 +121,7 @@
             TestType? testType = GetNullTestType();
 
             // parameterValue = null;
-            string parameterValue = testType?.ToParameterValue();
+            string parameterValue = testType?.ToAlias();
 
             Assert.Null(parameterValue);
         }

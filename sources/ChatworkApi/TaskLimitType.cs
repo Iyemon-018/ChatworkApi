@@ -5,13 +5,13 @@
     /// </summary>
     public enum TaskLimitType
     {
-        [ParameterValue("none")]
+        [Alias("none")]
         None,
 
-        [ParameterValue("date")]
+        [Alias("date")]
         Date,
 
-        [ParameterValue("time")]
+        [Alias("time")]
         Time,
     }
 }

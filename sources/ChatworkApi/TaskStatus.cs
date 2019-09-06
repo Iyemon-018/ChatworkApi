@@ -8,13 +8,13 @@
         /// <summary>
         /// オープンであることを表します。
         /// </summary>
-        [ParameterValue("open")]
+        [Alias("open")]
         Open,
 
         /// <summary>
         /// 完了していることを表します。
         /// </summary>
-        [ParameterValue("done")]
+        [Alias("done")]
         Done,
     }
 }

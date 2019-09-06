@@ -5,55 +5,55 @@
     /// </summary>
     public enum GroupChatIconType
     {
-        [ParameterValue("group")]
+        [Alias("group")]
         Group,
 
-        [ParameterValue("check")]
+        [Alias("check")]
         Check,
 
-        [ParameterValue("document")]
+        [Alias("document")]
         Document,
 
-        [ParameterValue("meeting")]
+        [Alias("meeting")]
         Meeting,
 
-        [ParameterValue("event")]
+        [Alias("event")]
         Event,
 
-        [ParameterValue("project")]
+        [Alias("project")]
         Project,
 
-        [ParameterValue("business")]
+        [Alias("business")]
         Business,
 
-        [ParameterValue("study")]
+        [Alias("study")]
         Study,
 
-        [ParameterValue("security")]
+        [Alias("security")]
         Security,
 
-        [ParameterValue("star")]
+        [Alias("star")]
         Star,
 
-        [ParameterValue("idea")]
+        [Alias("idea")]
         Idea,
 
-        [ParameterValue("heart")]
+        [Alias("heart")]
         Heart,
 
-        [ParameterValue("magcup")]
+        [Alias("magcup")]
         Magcup,
 
-        [ParameterValue("beer")]
+        [Alias("beer")]
         Beer,
 
-        [ParameterValue("music")]
+        [Alias("music")]
         Music,
 
-        [ParameterValue("sports")]
+        [Alias("sports")]
         Sports,
 
-        [ParameterValue("travel")]
+        [Alias("travel")]
         Travel
     }
 }

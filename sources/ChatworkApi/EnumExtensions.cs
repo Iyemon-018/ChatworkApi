@@ -9,7 +9,7 @@
     public static class EnumExtensions
     {
         /// <summary>
-        /// 列挙体の値に定義されている<see cref="ParameterValueAttribute"/> の値へ変換します。
+        /// 列挙体の値に定義されている<see cref="AliasAttribute"/> の値へ変換します。
         /// </summary>
         /// <typeparam name="TEnum">列挙体の型</typeparam>
         /// <param name="self">自分自身</param>
@@ -20,13 +20,13 @@
         /// <code><![CDATA[
         /// public enum TestType
         /// {
-        ///     [ParameterValue("method")]
+        ///     [Alias("method")]
         ///     Method,
         ///
-        ///     [ParameterValue("property")]
+        ///     [Alias("property")]
         ///     Property,
         ///
-        ///     [ParameterValue("inner class")]
+        ///     [Alias("inner class")]
         ///     InnerClass,
         ///
         ///     None,
@@ -39,7 +39,7 @@
         /// TestType testType = TestType.Method;
         ///
         /// // parameterValue = "method";
-        /// string parameterValue = testType.ToParameterValue();
+        /// string parameterValue = testType.ToAlias();
         /// ]]></code>
         ///
         /// 列挙子が <see cref="Nullable"/> の場合は次のようなコードになります。
@@ -48,24 +48,24 @@
         /// TestType? testType = GetTestType();
         ///
         /// // parameterValue = "property";
-        /// string parameterValue = testType?.ToParameterValue();
+        /// string parameterValue = testType?.ToAlias();
         /// ]]></code>
         /// <code><![CDATA[
         /// // testType is null.
         /// TestType? testType = GetNullTestType();
         ///
         /// // parameterValue = null;
-        /// string parameterValue = testType?.ToParameterValue(); 
+        /// string parameterValue = testType?.ToAlias(); 
         /// ]]></code>
         /// </example>
-        public static string ToParameterValue<TEnum>(this TEnum self) where TEnum : struct
+        public static string ToAlias<TEnum>(this TEnum self) where TEnum : struct
         {
             var enumType = typeof(TEnum);
 
             if (!enumType.IsEnum) throw new TypeAccessException($"{enumType.FullName} is not enum type.");
 
             return enumType.GetField(self.ToString())
-                           .GetCustomAttribute<ParameterValueAttribute>()?
+                           .GetCustomAttribute<AliasAttribute>()?
                            .Value;
         }
     }
