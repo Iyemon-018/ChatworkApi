@@ -14,7 +14,7 @@
     /// <seealso cref="IMeApi"/>
     /// <seealso cref="IMyApi"/>
     /// <seealso cref="IContactsApi"/>
-    public sealed class ClientApi : IMeApi, IMyApi, IContactsApi, IRoomsApi
+    public sealed class ClientApi : IMeApi, IMyApi, IContactsApi, IRoomsApi, IIncomingRequestsApi
     {
         /// <summary>
         /// Web API を使用するためのクライアント機能です。
@@ -474,6 +474,33 @@
         /// <returns>削除した招待リンクの情報を返します。</returns>
         public Task<DeletedInviteLink> DeleteInviteLink(int roomId)
             => DeleteAsync<DeletedInviteLink>($"/rooms/{roomId}/link");
+
+        #endregion
+
+        #region IIncomimgRequests
+
+        /// <summary>
+        /// 自分に対するコンタクト承認依頼を取得します。
+        /// </summary>
+        /// <returns>自分に対するコンタクト承認依頼を返します。</returns>
+        public Task<IEnumerable<ContactApprovalRequest>> GetContactApprovalRequestsAsync()
+            => GetAsync<IEnumerable<ContactApprovalRequest>>($"/incoming_requests");
+
+        /// <summary>
+        /// 自分に対するコンタクト承認依頼を承認します。
+        /// </summary>
+        /// <param name="requestId">承認依頼ID</param>
+        /// <returns>承認したコンタクト承認依頼を返します。</returns>
+        public Task<ConfirmedContactApprovalResponse> ConfirmContactApprovalRequestAsync(int requestId)
+            => PutAsync<ConfirmedContactApprovalResponse>($"/incoming_requests/{requestId}");
+
+        /// <summary>
+        /// 自分に対するコンタクト承認依頼をキャンセルします。
+        /// </summary>
+        /// <param name="requestId">キャンセルするコンタクト承認依頼ID</param>
+        /// <returns></returns>
+        public Task CancelContactApprovalRequestAsync(int requestId)
+            => DeleteAsync($"/incoming_requests/{requestId}");
 
         #endregion
     }
