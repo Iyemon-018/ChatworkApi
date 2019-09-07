@@ -19,7 +19,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
+    restoreSolution: '**/ChatworkApi.sln'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
