@@ -1,7 +1,6 @@
 ﻿namespace ChatworkApi
 {
     using System;
-    using System.Reflection;
 
     /// <summary>
     /// <see cref="Enum"/> 型に関する拡張メソッドを定義します。
@@ -64,9 +63,7 @@
 
             if (!enumType.IsEnum) throw new TypeAccessException($"{enumType.FullName} is not enum type.");
 
-            return enumType.GetField(self.ToString())
-                           .GetCustomAttribute<AliasAttribute>()?
-                           .Value;
+            return AliasCache<TEnum>.Value(self);
         }
     }
 }

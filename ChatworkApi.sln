@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatworkApi.Debugs.Console"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7D323D7E-9FBE-46D9-B474-D4770C3FCFE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatworkApi.Tests", "Tests\ChatworkApi.Tests\ChatworkApi.Tests.csproj", "{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatworkApi.Tests", "Tests\ChatworkApi.Tests\ChatworkApi.Tests.csproj", "{C60D21A0-3308-41A3-AD4E-A84B0E77B8C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
