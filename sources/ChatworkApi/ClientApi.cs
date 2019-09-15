@@ -104,8 +104,8 @@
         /// <returns>自分自身に割り当てられたステータスを返します。</returns>
         public Task<IEnumerable<MyTask>> GetMyTasksAsync(int?       assignedByAccountId
                                                        , TaskStatus status)
-            => GetAsync<IEnumerable<MyTask>>("/my/status"
-                                           , ("assigned_by_account_id", $"{assignedByAccountId}")
+            => GetAsync<IEnumerable<MyTask>>("/my/tasks"
+                                           , ("assigned_by_account_id", assignedByAccountId)
                                            , ("status", status.ToAlias()));
 
         #endregion

@@ -50,6 +50,11 @@
                                   + $", 未読の数:{myStatus.unread_num}, 返信の数:{myStatus.mention_num}, タスクの数:{myStatus.mention_num}");
             }
             {
+                var works = client.GetMyTasksAsync(null, TaskStatus.Open).Result;
+                WriteLine("- 自分に割り当てられた未完了タスク一覧");
+                WriteLine($"{string.Join(Environment.NewLine, works.Select(x => $"{x.limit_type}-{x.limit_time}{Environment.NewLine}{x.assigned_by_account.name}, {x.room.name}{Environment.NewLine}{x.body}"))}");
+            }
+            {
                 var contacts = client.GetContactsAsync()
                                      .Result
                                      .OrderBy(x => x.account_id)
