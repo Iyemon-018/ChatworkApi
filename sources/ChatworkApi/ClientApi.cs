@@ -373,7 +373,7 @@
         public Task<UpdatedTaskStatus> UpdateTaskStatusAsync(int        roomId
                                                            , int        taskId
                                                            , TaskStatus status)
-            => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}"
+            => PutAsync<UpdatedTaskStatus>($"/rooms/{roomId}/tasks/{taskId}/status"
                                          , ("body", status.ToAlias()));
 
         /// <summary>
