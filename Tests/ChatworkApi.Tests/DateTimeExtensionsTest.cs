@@ -15,6 +15,10 @@
         {
         }
 
+        private static readonly TimeSpan UtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+
+        private static readonly int UtcOffsetTotalSeconds = (int)UtcOffset.TotalSeconds;
+
         #region ToUnixTime Method
 
         public static IEnumerable<object[]> Get_Test_正常_ToUnixTime_Data()
@@ -22,25 +26,25 @@
             yield return new object[]
                          {
                              new DateTime(1970, 1, 1, 0,0,0)
-                           , 0
+                           , UtcOffsetTotalSeconds * -1
                          };
 
             yield return new object[]
                          {
                              new DateTime(1970, 1, 1, 0,0,1)
-                           , 1
+                           , (UtcOffsetTotalSeconds * -1) + 1
                          };
 
             yield return new object[]
                          {
                              new DateTime(2019, 8, 24, 2,57,46)
-                           , 1566615466
+                           , ((new DateTime(2019, 8, 24, 2,57,46) - new DateTime(1970, 1, 1)) - UtcOffset).TotalSeconds
                          };
 
             yield return new object[]
                          {
                              new DateTime(2038, 1, 19, 3,14,7)
-                           , int.MaxValue
+                           , ((new DateTime(2038, 1, 19, 3,14,7) - new DateTime(1970, 1, 1)) - UtcOffset).TotalSeconds
                          };
         }
 
@@ -65,22 +69,24 @@
 
         public static IEnumerable<object[]> Get_Test_正常_FromUnixTime_Data()
         {
+            // ここでUNIX日時を調べた。
+            // https://keisan.casio.jp/exec/system/1526004418
             yield return new object[]
                          {
                              0
-                             , new DateTimeOffset(new DateTime(1970, 1, 1,0, 0, 0)).LocalDateTime, 
+                             , new DateTime(1970, 1, 1,9, 0, 0), 
                          };
 
             yield return new object[]
                          {
                              1
-                           , new DateTimeOffset(new DateTime(1970, 1, 1,0, 0, 1)).LocalDateTime,
+                           , new DateTime(1970, 1, 1,9, 0, 1),
                          };
 
             yield return new object[]
                          {
                              1566613821
-                           , new DateTimeOffset(new DateTime(2019, 8, 24,2, 30, 21)).LocalDateTime,
+                           , new DateTime(2019, 8, 24,11, 30, 21),
                          };
         }
 

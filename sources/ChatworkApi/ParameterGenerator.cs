@@ -26,7 +26,6 @@
 
             if (value is IEnumerable<int> intArray) return string.Join(",", intArray);
 
-            // TODO DateTime? への変換機能を実装する。
             if (value is DateTime dateTime) return dateTime.ToUnixTime().ToString();
 
             var flag = value as bool?;
