@@ -47,7 +47,12 @@
         /// メッセージを構築します。
         /// </summary>
         /// <returns>構築したメッセージを返します。</returns>
-        public string Build() => _message.ToString();
+        public string Build()
+        {
+            var result = _message.ToString();
+            _message.Clear();
+            return result;
+        }
     }
 
     public partial class MessageBuilder

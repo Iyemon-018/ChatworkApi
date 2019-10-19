@@ -16,6 +16,80 @@
         {
         }
 
+        #region サンプル用
+
+        // このテストは README.md に記載するためのサンプルコードを記述する。
+        // var は使用せずに型は完全な形式で記載すること。
+        [Fact]
+        public void Test_SampleCode()
+        {
+            ChatworkApi.Messages.MessageBuilder builder = new MessageBuilder();
+
+            // "[To:1234567890]"
+            string toUserMessage = builder.To.Add(1234567890).Build();
+
+            // "[To:1234567890]田中 太郎 さん"
+            string toUserWithName = builder.To.Add(1234567890, "田中 太郎 さん").Build();
+
+            // "[To:1234567890]ご連絡いただきありがとうございます。"
+            string toUserWithMessage = builder.To.Add(1234567890)
+                                              .Add("ご連絡いただきありがとうございます。")
+                                              .Build();
+
+            // "[To:1234567890]
+            // ご連絡いただきありがとうございます。"
+            string toUserNewLineWithMessage = builder.To.Add(1234567890)
+                                                     .AddNewLine()
+                                                     .Add("ご連絡いただきありがとうございます。")
+                                                     .Build();
+
+            // ""
+            string reply = builder.Reply.Add(1234567890, 1234, 987654321)
+                               .AddNewLine()
+                               .Add($"ご確認いただきありがとうございました。")
+                               .Build();
+
+            // "[toall]
+            // ハロウィンパーティーのお知らせです。詳細は以下のとおりです。みなさまのご参加をお待ちしております！！！
+            // [info][title]～ハロウィン パーティ開催のお知らせ～[/title]・日時：2019年10月31日 17時00～　(２時間程度)
+            // ・参加費：\1,000
+            // ・その他：コスプレ衣装での参加も歓迎します！[/info]"
+            string toAllWithInfo = builder.To.All()
+                                          .AddNewLine()
+                                          .Add($"ハロウィンパーティーのお知らせです。詳細は以下のとおりです。みなさまのご参加をお待ちしております！！！")
+                                          .AddNewLine()
+                                          .Information.Add("～ハロウィン パーティ開催のお知らせ～"
+                                                         , $"・日時：2019年10月31日 17時00～　(２時間程度){Environment.NewLine}"
+                                                           + $"・参加費：\\1,000{Environment.NewLine}"
+                                                           + $"・その他：コスプレ衣装での参加も歓迎します！")
+                                          .Build();
+
+            Assert.Equal("[To:1234567890]", toUserMessage);
+            Assert.Equal("[To:1234567890]田中 太郎 さん", toUserWithName);
+            Assert.Equal("[To:1234567890]ご連絡いただきありがとうございます。", toUserWithMessage);
+            Assert.Equal($"[To:1234567890]{Environment.NewLine}"
+                         + $"ご連絡いただきありがとうございます。"
+                       , toUserNewLineWithMessage);
+            Assert.Equal($"[rp aid=1234567890 to=1234-987654321]{Environment.NewLine}"
+                         + $"ご確認いただきありがとうございました。"
+                       , reply);
+            Assert.Equal($"[toall]{Environment.NewLine}"
+                         + $"ハロウィンパーティーのお知らせです。詳細は以下のとおりです。みなさまのご参加をお待ちしております！！！{Environment.NewLine}"
+                         + $"[info][title]～ハロウィン パーティ開催のお知らせ～[/title]・日時：2019年10月31日 17時00～　(２時間程度){Environment.NewLine}"
+                         + $"・参加費：\\1,000{Environment.NewLine}"
+                         + $"・その他：コスプレ衣装での参加も歓迎します！[/info]"
+                       , toAllWithInfo);
+
+            Output(toUserMessage);
+            Output(toUserWithName);
+            Output(toUserWithMessage);
+            Output(toUserNewLineWithMessage);
+            Output(reply);
+            Output(toAllWithInfo);
+        }
+
+        #endregion
+
         #region Add
         // TODO test Add() method
         #endregion
