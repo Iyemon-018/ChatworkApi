@@ -1,5 +1,6 @@
 ﻿namespace ChatworkApi.Messages
 {
+    using System;
     using System.Text;
     using Models;
 
@@ -7,7 +8,7 @@
     /// Chatwork 用のメッセージを構築するための機能を提供するクラスです。
     /// </summary>
     /// <remarks>http://developer.chatwork.com/ja/messagenotation.html</remarks>
-    public sealed partial class MessageBuilder : IMessageBuilder, IToMessage, IReplyMessage, IInformationMessage
+    public sealed partial class MessageBuilder : IMessageBuilder, IToMessage, IReplyMessage, IInformationMessage, IQuoteMessage
     {
         /// <summary>
         /// メッセージを構築するためのインスタンスです。
@@ -109,7 +110,7 @@
         /// <returns>通知を作成した <see cref="IMessageBuilder"/> オブジェクトを返します。</returns>
         IMessageBuilder IReplyMessage.Add(int accountId
                                         , int roomId
-                                        , int messageId)
+                                        , string messageId)
             => Add($"[rp aid={accountId} to={roomId}-{messageId}]");
     }
 
@@ -136,5 +137,25 @@
         IMessageBuilder IInformationMessage.Add(string title
                                               , string message)
             => Add($"[info][title]{title}[/title]{message}[/info]");
+    }
+
+    public partial class MessageBuilder
+    {
+        /// <summary>
+        /// 引用を作成するための機能を提供します。
+        /// </summary>
+        public IQuoteMessage Quote => this;
+
+        /// <summary>
+        /// 指定したメッセージの引用を構築します。
+        /// </summary>
+        /// <param name="accountId">ユーザーアカウントID</param>
+        /// <param name="time">引用したメッセージの日時</param>
+        /// <param name="body">引用対象のメッセージ本文</param>
+        /// <returns>通知を作成した <see cref="IMessageBuilder"/> オブジェクトを返します。</returns>
+        IMessageBuilder IQuoteMessage.Add(int      accountId
+                                        , DateTime time
+                                        , string   body)
+            => Add($"[引用 aid={accountId} time={time.ToUnixTime()}]{body}[/引用]");
     }
 }

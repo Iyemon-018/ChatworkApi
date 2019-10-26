@@ -21,6 +21,11 @@
         IInformationMessage Information { get; }
 
         /// <summary>
+        /// 引用を作成するための機能を提供します。
+        /// </summary>
+        IQuoteMessage Quote { get; }
+
+        /// <summary>
         /// メッセージを構築します。
         /// </summary>
         /// <returns>構築したメッセージを返します。</returns>

@@ -74,19 +74,19 @@
             yield return new object[]
                          {
                              0
-                             , new DateTime(1970, 1, 1,9, 0, 0), 
+                             , new DateTime(1970, 1, 1,0, 0, 0).Add(UtcOffset), 
                          };
 
             yield return new object[]
                          {
                              1
-                           , new DateTime(1970, 1, 1,9, 0, 1),
+                           , new DateTime(1970, 1, 1,0, 0, 0).Add(UtcOffset).AddSeconds(1),
                          };
 
             yield return new object[]
                          {
                              1566613821
-                           , new DateTime(2019, 8, 24,11, 30, 21),
+                           , new DateTime(1970, 1, 1,0, 0, 0).Add(UtcOffset).AddSeconds(1566613821),
                          };
         }
 

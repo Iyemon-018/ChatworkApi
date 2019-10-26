@@ -43,8 +43,9 @@
                                                      .Add("ご連絡いただきありがとうございます。")
                                                      .Build();
 
-            // ""
-            string reply = builder.Reply.Add(1234567890, 1234, 987654321)
+            // "[rp aid=1234567890 to=1234-987654321]
+            // ご確認いただきありがとうございました。"
+            string reply = builder.Reply.Add(1234567890, 1234, "987654321")
                                .AddNewLine()
                                .Add($"ご確認いただきありがとうございました。")
                                .Build();
@@ -64,6 +65,15 @@
                                                            + $"・その他：コスプレ衣装での参加も歓迎します！")
                                           .Build();
 
+            // "[引用 aid=1234567890 time=1571899391]昨日送ったメールはご覧になっていただけたでしょうか？[/引用]
+            // 確認したので資料添付して返しました。ご確認をお願いします。"
+            string quote = builder.Quote.Add(1234567890
+                                           , new DateTime(2019, 10, 24, 15, 43, 11)
+                                           , $"昨日送ったメールはご覧になっていただけたでしょうか？")
+                                  .AddNewLine()
+                                  .Add("確認したので資料添付して返しました。ご確認をお願いします。")
+                                  .Build();
+
             Assert.Equal("[To:1234567890]", toUserMessage);
             Assert.Equal("[To:1234567890]田中 太郎 さん", toUserWithName);
             Assert.Equal("[To:1234567890]ご連絡いただきありがとうございます。", toUserWithMessage);
@@ -79,6 +89,9 @@
                          + $"・参加費：\\1,000{Environment.NewLine}"
                          + $"・その他：コスプレ衣装での参加も歓迎します！[/info]"
                        , toAllWithInfo);
+            Assert.Equal($"[引用 aid=1234567890 time={new DateTime(2019, 10, 24, 15, 43, 11).ToUnixTime()}]昨日送ったメールはご覧になっていただけたでしょうか？[/引用]{Environment.NewLine}"
+                         + $"確認したので資料添付して返しました。ご確認をお願いします。"
+                         , quote);
 
             Output(toUserMessage);
             Output(toUserWithName);
@@ -86,6 +99,7 @@
             Output(toUserNewLineWithMessage);
             Output(reply);
             Output(toAllWithInfo);
+            Output(quote);
         }
 
         #endregion
@@ -356,6 +370,28 @@
                          + $"参加費 : 1,000円[/info]"
                          + $"参加確認をしますので、2019年7月10日までにご連絡ください。{Environment.NewLine}"
                          + $"よろしくお願いいたします。"
+                       , actual);
+            Output(actual);
+        }
+
+        #endregion
+
+        #region Quote
+
+        [Fact]
+        public void Test_正常_Quote_Add()
+        {
+            // arrange
+            var body = $"お知らせ。{Environment.NewLine}"
+                       + $"明日はお休みです！";
+            var dateTime = new DateTime(2019, 10, 23, 11, 23, 10);
+
+            // act
+            var actual = new MessageBuilder().Quote.Add(12345, dateTime, body).Build();
+
+            // assert
+            Assert.Equal($"[引用 aid=12345 time={dateTime.ToUnixTime()}]お知らせ。{Environment.NewLine}"
+                         + $"明日はお休みです！[/引用]"
                        , actual);
             Output(actual);
         }

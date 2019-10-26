@@ -14,6 +14,6 @@
         /// <returns>通知を作成した <see cref="IMessageBuilder"/> オブジェクトを返します。</returns>
         IMessageBuilder Add(int accountId
                           , int roomId
-                          , int messageId);
+                          , string messageId);
     }
 }
