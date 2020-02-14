@@ -43,15 +43,8 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: '3b1a8d29-14b3-493a-891e-e78d71976c9d/86a5867e-93d3-4e52-99b7-ed8ab5c7c545'
+    publishVstsFeed: '4c28fefe-8e81-4da5-8ccb-40954ad1f67e/b69d3e57-14e8-4ad0-bc1c-0e34f82db1f3'
     allowPackageConflicts: true
-
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: '4c28fefe-8e81-4da5-8ccb-40954ad1f67e/f26859b5-c70b-4cdf-b6c7-5864c8bd434b'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
