@@ -38,6 +38,13 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '4c28fefe-8e81-4da5-8ccb-40954ad1f67e/ab246ab8-ecaa-476e-984e-cdaa6d640c31'
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
