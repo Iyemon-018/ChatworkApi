@@ -1,9 +1,8 @@
-﻿namespace ChatworkApi.Models
-{
-    public sealed class UnreadMessage
-    {
-        public int unread_num { get; set; }
+﻿namespace ChatworkApi.Models;
 
-        public int mention_num { get; set; }
-    }
+public sealed class UnreadMessage
+{
+    public int unread_num { get; set; }
+
+    public int mention_num { get; set; }
 }

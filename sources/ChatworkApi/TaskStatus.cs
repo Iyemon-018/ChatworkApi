@@ -1,20 +1,19 @@
-﻿namespace ChatworkApi
+﻿namespace ChatworkApi;
+
+/// <summary>
+/// タスクの状態を定義します。
+/// </summary>
+public enum TaskStatus
 {
     /// <summary>
-    /// タスクの状態を定義します。
+    /// オープンであることを表します。
     /// </summary>
-    public enum TaskStatus
-    {
-        /// <summary>
-        /// オープンであることを表します。
-        /// </summary>
-        [Alias("open")]
-        Open,
+    [Alias("open")]
+    Open,
 
-        /// <summary>
-        /// 完了していることを表します。
-        /// </summary>
-        [Alias("done")]
-        Done,
-    }
+    /// <summary>
+    /// 完了していることを表します。
+    /// </summary>
+    [Alias("done")]
+    Done,
 }

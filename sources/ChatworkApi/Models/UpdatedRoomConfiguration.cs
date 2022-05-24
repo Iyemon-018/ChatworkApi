@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class UpdatedRoomConfiguration
 {
-    public sealed class UpdatedRoomConfiguration
-    {
-        public int room_id { get; set; }
-    }
+    public int room_id { get; set; }
 }

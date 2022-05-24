@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class UpdatedMessage
 {
-    public sealed class UpdatedMessage
-    {
-        public string message_id { get; set; }
-    }
+    public string message_id { get; set; }
 }

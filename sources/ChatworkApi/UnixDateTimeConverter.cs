@@ -1,41 +1,23 @@
-﻿namespace ChatworkApi
+﻿namespace ChatworkApi;
+
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+public sealed class UnixDateTimeConverter : JsonConverter<DateTime>
 {
-    using System;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
-
-    public sealed class UnixDateTimeConverter : DateTimeConverterBase
+    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        /// <summary>Writes the JSON representation of the object.</summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter     writer
-                                     , object         value
-                                     , JsonSerializer serializer)
-        {
-            var dt    = value as DateTime?;
-            var ticks = dt?.ToUnixTime() ?? 0;
-            writer.WriteValue(ticks);
-        }
+        if (reader.TokenType != JsonTokenType.Number)
+            throw new FormatException($"Since token type is not integer, it cannot be converted DateTime.({reader.TokenType})");
 
-        /// <summary>Reads the JSON representation of the object.</summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
-        /// <param name="objectType">Type of the object.</param>
-        /// <param name="existingValue">The existing value of object being read.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader     reader
-                                      , Type           objectType
-                                      , object         existingValue
-                                      , JsonSerializer serializer)
-        {
-            if (reader.TokenType != JsonToken.Integer)
-                throw new FormatException($"Since token type is not integer, it cannot be converted DateTime.({reader.TokenType})");
+        var ticks = reader.GetInt64();
 
-            var ticks = (long) reader.Value;
+        return ticks == 0 ? default : ticks.FromUnixTime();
+    }
 
-            return ticks == 0 ? default(DateTime?) : ticks.FromUnixTime();
-        }
+    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    {
+        writer.WriteNumberValue(value.ToUnixTime());
     }
 }

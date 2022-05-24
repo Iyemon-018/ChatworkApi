@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class UploadedFileData
 {
-    public sealed class UploadedFileData
-    {
-        public int file_id { get; set; }
-    }
+    public int file_id { get; set; }
 }

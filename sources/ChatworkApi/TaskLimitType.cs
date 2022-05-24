@@ -1,17 +1,16 @@
-﻿namespace ChatworkApi
+﻿namespace ChatworkApi;
+
+/// <summary>
+/// タスクの期限種別を定義します。
+/// </summary>
+public enum TaskLimitType
 {
-    /// <summary>
-    /// タスクの期限種別を定義します。
-    /// </summary>
-    public enum TaskLimitType
-    {
-        [Alias("none")]
-        None,
+    [Alias("none")]
+    None,
 
-        [Alias("date")]
-        Date,
+    [Alias("date")]
+    Date,
 
-        [Alias("time")]
-        Time,
-    }
+    [Alias("time")]
+    Time,
 }

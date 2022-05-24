@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class AddTask
 {
-    public sealed class AddTask
-    {
-        public int[] task_ids { get; set; }
-    }
+    public int[] task_ids { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class DeletedInviteLink
 {
-    public sealed class DeletedInviteLink
-    {
-        public bool _public { get; set; }
-    }
+    public bool _public { get; set; }
 }

@@ -1,13 +1,12 @@
 # Chatwork API
-
 ## 概要
 
 これはChatwork APIを.NETで使用するためのライブラリです。
-`.NET Standard2.0`で開発しているため、クロスプラットフォームでの開発が可能です。
+`.NET6`で開発しているため、クロスプラットフォームでの開発が可能です。
 
 サポートされているフレームワークのバージョンについては以下のページを参照してください。
 
-[.NET Standard - .NET実装のサポート](https://docs.microsoft.com/ja-jp/dotnet/standard/net-standard#net-implementation-support)
+[\.NET 6\.0 \(Linux、macOS、Windows\) をダウンロードする](https://dotnet.microsoft.com/ja-jp/download/dotnet/6.0)
 
 ## Visual Studioの設定
 
@@ -36,17 +35,54 @@ using ChatworkApi;
 APIへのアクセスには`ClientApi`に`API Token`を設定してインスタンス化します。
 
 ```cs
-var client = new ClientApi(apiToken);
+var client = new Client(new HttpClient());
+client.ApiToken(apiToken);
 ```
 
 それぞれのAPIは次のようにアクセスします。
 
 ```cs
-var me = await client.GetMeAsync();
+var me = await client.Me.GetMeAsync().Result.Content;
 
-var myStatus = await client.GetMyStatusAsync;
+var myStatus = await client.My.GetMyStatusAsync().Result.Content;
 
-var works = await client.GetMyTasksAsync(null, TaskStatus.Open);
+var works = await client.My.GetMyTasksAsync(null, TaskStatus.Open).Result.Content;
+```
+
+全体の構成としては次のようになります。
+
+```cs
+namespace ChatworkApi.Debugs.Console;
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Client client   = new Client(new HttpClient());
+        client.ApiToken(apiToken);
+        
+        Me me = client.Me.GetMeAsync().Result.Content;
+        Console.WriteLine($"所属:{me.organization_name}, 氏名:{me.name}, ID:{me.account_id}");
+        
+        MyStatus myStatus = client.My.GetMyStatusAsync().Result.Content;
+        Console.WriteLine($"未読のある部屋の数:{myStatus.unread_room_num}"
+                        + $", 返信のある部屋の数:{myStatus.mention_room_num}"
+                        + $", タスクのある部屋の数:{myStatus.mytask_room_num}"
+                        + $", 未読の数:{myStatus.unread_num}"
+                        + $", 返信の数:{myStatus.mention_num}"
+                        + $", タスクの数:{myStatus.mention_num}");
+
+        IEnumerable<MyTask> works = client.My.GetMyTasksAsync(null, TaskStatus.Open).Result.Content;
+        Console.WriteLine("- 自分に割り当てられた未完了タスク一覧");
+        Console.WriteLine($"{string.Join(Environment.NewLine, works.Select(x => $"{x.limit_type}-{x.limit_time}{Environment.NewLine}{x.assigned_by_account.name}, {x.room.name}{Environment.NewLine}{x.body}"))}");
+    }
+
 ```
 
 ### メッセージAPI

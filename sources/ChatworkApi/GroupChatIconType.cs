@@ -1,59 +1,58 @@
-﻿namespace ChatworkApi
+﻿namespace ChatworkApi;
+
+/// <summary>
+/// グループチャットに表示するアイコン種別を定義します。
+/// </summary>
+public enum GroupChatIconType
 {
-    /// <summary>
-    /// グループチャットに表示するアイコン種別を定義します。
-    /// </summary>
-    public enum GroupChatIconType
-    {
-        [Alias("group")]
-        Group,
+    [Alias("group")]
+    Group,
 
-        [Alias("check")]
-        Check,
+    [Alias("check")]
+    Check,
 
-        [Alias("document")]
-        Document,
+    [Alias("document")]
+    Document,
 
-        [Alias("meeting")]
-        Meeting,
+    [Alias("meeting")]
+    Meeting,
 
-        [Alias("event")]
-        Event,
+    [Alias("event")]
+    Event,
 
-        [Alias("project")]
-        Project,
+    [Alias("project")]
+    Project,
 
-        [Alias("business")]
-        Business,
+    [Alias("business")]
+    Business,
 
-        [Alias("study")]
-        Study,
+    [Alias("study")]
+    Study,
 
-        [Alias("security")]
-        Security,
+    [Alias("security")]
+    Security,
 
-        [Alias("star")]
-        Star,
+    [Alias("star")]
+    Star,
 
-        [Alias("idea")]
-        Idea,
+    [Alias("idea")]
+    Idea,
 
-        [Alias("heart")]
-        Heart,
+    [Alias("heart")]
+    Heart,
 
-        [Alias("magcup")]
-        Magcup,
+    [Alias("magcup")]
+    Magcup,
 
-        [Alias("beer")]
-        Beer,
+    [Alias("beer")]
+    Beer,
 
-        [Alias("music")]
-        Music,
+    [Alias("music")]
+    Music,
 
-        [Alias("sports")]
-        Sports,
+    [Alias("sports")]
+    Sports,
 
-        [Alias("travel")]
-        Travel
-    }
+    [Alias("travel")]
+    Travel
 }

@@ -1,7 +1,6 @@
-﻿namespace ChatworkApi.Models
+﻿namespace ChatworkApi.Models;
+
+public sealed class UpdatedTaskStatus
 {
-    public sealed class UpdatedTaskStatus
-    {
-        public int task_id { get; set; }
-    }
+    public int task_id { get; set; }
 }
