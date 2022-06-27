@@ -91,6 +91,10 @@ internal class Program
             WriteLine($"{roomConfiguration.name}:{roomConfiguration.room_id}(タスク:{roomConfiguration.mytask_num})[最終更新日時:{roomConfiguration.last_update_time:yyyy/MM/dd HH:mm:ss}]");
         }
         {
+            var myRoomMessage = client.Rooms.AddMessageAsync(myRoomId, $"{DateTime.Now:yyyy/MM/dd(ddd) HH:mm:ss.fff} Test from ChatworkApi.Debugs.Console.", false).Result.Content;
+            WriteLine($"- マイチャットへメッセージ送信");
+        }
+        {
             var roomId = int.Parse(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "room_id.txt")));
             var roomMembers = client.Rooms
                                     .GetRoomMembersAsync(roomId)

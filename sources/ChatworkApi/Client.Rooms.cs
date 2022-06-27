@@ -60,9 +60,9 @@ public partial class Client : IRoomsApi
         request.TryAddQuery("members_readonly_ids", readonlyMembersIds);
         request.TryAddQuery("description", description);
         request.TryAddQuery("icon_preset", iconType, iconType?.ToAlias());
-        request.TryAddQuery("link", link);
+        request.TryAddQuery("link", link?.AsParameter());
         request.TryAddQuery("link_code", linkCode);
-        request.TryAddQuery("link_need_acceptance", needLinkAcceptance);
+        request.TryAddQuery("link_need_acceptance", needLinkAcceptance?.AsParameter());
 
         var response = await _apiClient.PostAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
 
@@ -189,8 +189,8 @@ public partial class Client : IRoomsApi
         var request = RestApiRequest.AsQuery($"/rooms/{roomId}/messages"
               , new()
                 {
-                    ["force"] = force
-                });
+                    ["force"] = force?.AsParameter()
+              });
         var response = await _apiClient.GetAsync(request, cancellationToken).ConfigureAwait(false);
 
         return await CreateResponseAsync<IEnumerable<Message>>(response, HttpStatusCode.OK, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -214,12 +214,12 @@ public partial class Client : IRoomsApi
                                                                      , bool              unread
                                                                      , CancellationToken cancellationToken)
     {
-        var request = RestApiRequest.AsQuery($"/rooms/{roomId}/members"
+        var request = RestApiRequest.AsQuery($"/rooms/{roomId}/messages"
               , new()
                 {
                     ["body"]        = body
-                  , ["self_unread"] = unread
-                });
+                  , ["self_unread"] = unread.AsParameter()
+              });
 
         var response = await _apiClient.PostAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -485,7 +485,7 @@ public partial class Client : IRoomsApi
                                                                 , CancellationToken cancellationToken)
     {
         var request = RestApiRequest.AsQuery($"/rooms/{roomId}/files/{fileId}");
-        request.TryAddQuery("create_download_url", createDownloadUrl);
+        request.TryAddQuery("create_download_url", createDownloadUrl?.AsParameter());
 
         var response = await _apiClient.GetAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -528,7 +528,7 @@ public partial class Client : IRoomsApi
         var request  = RestApiRequest.AsQuery($"/rooms/{roomId}/link");
         request.TryAddQuery("code", code);
         request.TryAddQuery("description", description);
-        request.TryAddQuery("need_acceptance", needAcceptance);
+        request.TryAddQuery("need_acceptance", needAcceptance?.AsParameter());
 
         var response = await _apiClient.PostAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -557,7 +557,7 @@ public partial class Client : IRoomsApi
         var request = RestApiRequest.AsQuery($"/rooms/{roomId}/link");
         request.TryAddQuery("code", code);
         request.TryAddQuery("description", description);
-        request.TryAddQuery("need_acceptance", needAcceptance);
+        request.TryAddQuery("need_acceptance", needAcceptance?.AsParameter());
 
         var response = await _apiClient.PutAsync(request, cancellationToken).ConfigureAwait(false);
 

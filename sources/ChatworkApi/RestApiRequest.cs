@@ -14,7 +14,7 @@ internal sealed class RestApiRequest
 
     private RestApiRequest(string uri)
     {
-        _baseUri = $"https://api.chatwork.com/v2/{uri}";
+        _baseUri = $"https://api.chatwork.com/v2{uri}";
     }
 
     public RestApiRequest(string uri, HttpContent content) : this(uri)
